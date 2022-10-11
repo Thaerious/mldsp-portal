@@ -1,0 +1,102 @@
+@use "../../styles/custom_button";
+@import "bootstrap/scss/bootstrap";
+
+body,
+html {
+    margin: 0;
+    font-family: sans-serif;
+    background-color: lightblue;
+}
+
+.content {
+    margin: 0 auto;
+    width: 400px;
+}
+
+table,
+td,
+th {
+    border: 1px solid #aaa;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+    height: 30px;
+}
+
+td {
+    text-align: center;
+    padding: 5px;
+}
+
+.form {
+    margin-top: 20px;
+}
+
+#content {
+    width: 70%;
+}
+
+.phantom {
+    position: absolute;
+    opacity: 0%;
+    pointer-events: none;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 10px;
+    padding: 10px;
+    height: 100%;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    background-color: rgb(195, 244, 255);
+    width: 100%;
+    height: 100%;
+}
+
+.box {
+    background-color: lightgrey;
+    width: auto;
+    padding: 50px;
+    margin: auto;
+}
+
+a {
+    text-decoration: none;
+}
+
+.list-group-item{
+    margin: 10px;
+
+    .btn{
+        color: white;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;      
+
+        &.select {
+            background-color: green;    
+        }
+        
+        &.remove {
+            background-color: red;
+        }        
+
+        // after select/remove to give it precedence
+        &.disabled{
+            background-color: grey; 
+            color: black;
+        }
+
+    }
+}

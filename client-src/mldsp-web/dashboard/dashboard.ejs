@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/mldsp-web/dashboard/dashboard.css">
+    <%- include('./head.ejs') %>
+    <script type="importmap">
+        <%- include(widget.lib_file) %>
+    </script>
+</head>
+<body>
+    <script type="module" src="/mldsp-web/dashboard/Dashboard.mjs"></script>
+    <%- include(widget.template_file) %>
+    <%- include('./body.ejs'); %>
+</body>
+</html>
+

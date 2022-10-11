@@ -1,0 +1,22 @@
+{
+  "name": "mldsp-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@html-widget/core": "file:../HTML-Widget",
+    "@thaerious/logger": "^0.2.1",
+    "async-mutex": "^0.4.0",
+    "bootstrap": "^5.2.2",
+    "dotenv": "^16.0.3",
+    "express-fileupload": "^1.4.0",
+    "express-openid-connect": "^2.8.0",
+    "unzipper": "^0.10.11"
+  },
+  "type": "module"
+}

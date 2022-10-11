@@ -1,0 +1,19 @@
+{
+  "components": [
+    {
+      "type": "view",
+      "fullName": "mainboard",
+      "view": "mainboard.ejs",
+      "es6": "Mainboard.mjs",
+      "style": {
+        "src": "mainboard.scss",
+        "dest": "mainboard.css"
+      },
+      "dir": {
+        "sub": "mldsp-web/mainboard",
+        "src": "client-src/mldsp-web/mainboard"
+      },
+      "package": "mldsp-web"
+    }
+  ]
+}

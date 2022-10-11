@@ -1,0 +1,12 @@
+{
+  "imports": {
+    "@html-widget/core": {
+      "path": "/@html-widget/core",
+      "file": "/@html-widget/core/core-elements/lib.mjs"
+    },
+    "bootstrap": {
+      "file": "/bootstrap/dist/js/bootstrap.esm.js",
+      "path": "/bootstrap"
+    }
+  }
+}

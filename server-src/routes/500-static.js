@@ -1,0 +1,1 @@
+../../node_modules/@html-widget/core/src/server/routes/500-static.js

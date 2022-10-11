@@ -1,0 +1,19 @@
+{
+  "components": [
+    {
+      "type": "view",
+      "fullName": "dashboard",
+      "view": "dashboard.ejs",
+      "es6": "Dashboard.mjs",
+      "style": {
+        "src": "dashboard.scss",
+        "dest": "dashboard.css"
+      },
+      "dir": {
+        "sub": "mldsp-web/dashboard",
+        "src": "client-src/mldsp-web/dashboard"
+      },
+      "package": "mldsp-web"
+    }
+  ]
+}
