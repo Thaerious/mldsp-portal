@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import { API_CONST } from "mldsp-api";
 
 dotenv.config();
 
@@ -9,13 +10,9 @@ const config = {
         PENDING: "pending",
         COMPLETE: "complete",
     },
-    loc: {
+    URL: {
         LIST_DATASETS: "/list_datasets",
-        SUBMIT_CALCULATION: "/submit_calculation",
-        GET_JOBS: "/get_jobs",
-        GET_RESULTS: "/get_results",
-        REMOVE_RESULT: "/remove_result",
-        UPLOAD_DATASET: "/upload-dataset"
+        UPLOAD_ZIP_DATA: "/upload_zip_data"
     },
     api: {
         PRESET_DATASET_DIR: process.env.DATA_PRESET || "data/default",
@@ -35,7 +32,7 @@ const config = {
     mldsp: {
         FOLDS: 10
     },
-    data: {
+    DATA: {
         DEFAULT: process.env.DATA_DEFAULT || "./data/default",
         USER: process.env.DATA_USER || "./data/user"
     },
@@ -51,6 +48,9 @@ const config = {
             postLogoutRedirect: `/index`,
             login: false,
         }
+    },
+    PATH: {
+        ROUTES : "server-src/routes"
     },
     LOC: {
         API: "http://127.0.0.1:7632"

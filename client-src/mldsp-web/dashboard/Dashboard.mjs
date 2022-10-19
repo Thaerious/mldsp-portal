@@ -1,5 +1,6 @@
 "use strict";
 
+import CONST from "/shared/constants.js";
 import {removeResult, getJobs, getNumericalRepresentations, getDataSetNames, getCGRKValue, submitCalculation} from "./scripts/externals.mjs";
 import cloneTemplate from "./scripts/cloneTemplate.mjs";
 import showUploadDialog from "./scripts/upload.mjs";

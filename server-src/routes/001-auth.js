@@ -1,6 +1,6 @@
 import Express from "express";
 import pkg from "express-openid-connect";
-import config from "../config.js";
+import config from "../constants.js";
 
 const { auth } = pkg;
 const apiRouter = Express.Router();

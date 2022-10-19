@@ -1,4 +1,4 @@
-import apiConfig from "./apiConfig.mjs";
+import CONST from "/shared/constants.js";
 
 function getNumericalRepresentations() {
     return [
@@ -22,16 +22,15 @@ function getNumericalRepresentations() {
 }
 
 async function getDataSetNames() {
-    const response = await fetch(apiConfig.loc.LIST_DATASETS, {
+    const response = await fetch(CONST.URL.LIST_DATASETS, {
         method: "POST",
-    });
-    const r = await response.json();
-    console.log(r);
-    return [...r.default, ...r.user];
+    });    
+    const r = await response.json();    
+    return [...r.files];
 }
 
 async function getResults(jobid){
-    const response = await fetch(apiConfig.loc.GET_RESULTS, {
+    const response = await fetch(CONST.URL.GET_RESULTS, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -45,13 +44,13 @@ async function getResults(jobid){
 }
 
 async function getJobs() {
-    const response = await fetch(apiConfig.loc.GET_JOBS, {
-        method: "POST",
-    });
+    // const response = await fetch(CONST.URL.GET_JOBS, {
+    //     method: "POST",
+    // });
 
-    const r = await response.json();
-    console.log(r);
-    return r;
+    // const r = await response.json();
+    return[];
+    // return r;
 }
 
 function getCGRKValue() {
@@ -73,7 +72,7 @@ function getCGRKValue() {
  * See: represenations.txt
  */
 async function submitCalculation(name, dataset, settings) {
-    const response = await fetch(apiConfig.loc.SUBMIT_CALCULATION, {
+    const response = await fetch(CONST.URL.START_JOB, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -86,12 +85,11 @@ async function submitCalculation(name, dataset, settings) {
     });
 
     const r = await response.json();
-    console.log(r);
     return r;
 }
 
 async function removeResult(jobid){
-    const response = await fetch(apiConfig.loc.REMOVE_RESULT, {
+    const response = await fetch(CONST.URL.DELETE_JOB, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -102,7 +100,6 @@ async function removeResult(jobid){
     });
 
     const r = await response.json();
-    console.log(r);
     return r;    
 }
 

@@ -1,5 +1,20 @@
-@use "../../styles/custom_button";
 @import "bootstrap/scss/bootstrap";
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+@import "./styles/custom_button";
+@import "./styles/sidebar";
+@import "./styles/datasets";
+
+$primary: #900;
+$enable-shadows: true;
+$prefix: "mo-";
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;    
+}
 
 body,
 html {
@@ -8,43 +23,18 @@ html {
     background-color: lightblue;
 }
 
-.content {
-    margin: 0 auto;
-    width: 400px;
-}
-
-table,
-td,
-th {
-    border: 1px solid #aaa;
-}
-
-table {
-    border-collapse: collapse;
-    width: 100%;
-}
-
-th {
-    height: 30px;
-}
-
-td {
+h1{
     text-align: center;
-    padding: 5px;
+    font-weight: bolder;
 }
 
-.form {
-    margin-top: 20px;
-}
-
-#content {
-    width: 70%;
-}
-
-.phantom {
-    position: absolute;
-    opacity: 0%;
-    pointer-events: none;
+.home-section {
+    position: relative;
+    background: #e4e9f7;
+    height: 100vh;
+    left: 260px;
+    width: calc(100% - 260px);
+    transition: all 0.5s ease;
 }
 
 .grid-container {
@@ -53,50 +43,26 @@ td {
     grid-gap: 10px;
     padding: 10px;
     height: 100%;
+
+    .flex-column {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid black;
+        background-color: rgb(195, 244, 255);
+        width: 100%;
+        height: 100%;
+    }
 }
 
-.flex-column {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid black;
-    background-color: rgb(195, 244, 255);
-    width: 100%;
-    height: 100%;
-}
-
-.box {
-    background-color: lightgrey;
-    width: auto;
-    padding: 50px;
-    margin: auto;
-}
-
-a {
-    text-decoration: none;
-}
-
-.list-group-item{
+.form-group{
+    position: relative;
+    width: 90%;
+    left: calc(5% - 10px);
     margin: 10px;
 
-    .btn{
-        color: white;
-        border: none;
-        cursor: pointer;
-        text-decoration: none;      
-
-        &.select {
-            background-color: green;    
-        }
-        
-        &.remove {
-            background-color: red;
-        }        
-
-        // after select/remove to give it precedence
-        &.disabled{
-            background-color: grey; 
-            color: black;
-        }
-
+    label {
+        position: relative;
+        font-weight: bold;
+        left: 2px;
     }
 }

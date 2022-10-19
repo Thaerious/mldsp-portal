@@ -7,6 +7,10 @@
     "bootstrap": {
       "file": "/bootstrap/dist/js/bootstrap.esm.js",
       "path": "/bootstrap"
+    },
+    "mldsp-api": {
+      "file": "/mldsp-api/src/index.js",
+      "path": "/mldsp-api"
     }
   }
 }
