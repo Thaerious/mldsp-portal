@@ -6,7 +6,6 @@ import showUploadDialog from "./scripts/upload.mjs";
 
 import ModalConfirm from "./scripts/ModalConfirm.mjs";
 window.ModalConfirm = ModalConfirm;
-console.log("HERE")
 
 (() => {
     window.addEventListener("load", async() => {

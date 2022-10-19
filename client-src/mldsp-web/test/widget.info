@@ -1,0 +1,19 @@
+{
+  "components": [
+    {
+      "type": "view",
+      "fullName": "test",
+      "view": "test.ejs",
+      "es6": "Test.mjs",
+      "style": {
+        "src": "test.scss",
+        "dest": "test.css"
+      },
+      "dir": {
+        "sub": "mldsp-web/test",
+        "src": "client-src/mldsp-web/test"
+      },
+      "package": "mldsp-web"
+    }
+  ]
+}

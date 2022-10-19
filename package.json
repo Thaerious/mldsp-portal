@@ -11,11 +11,15 @@
   "dependencies": {
     "@html-widget/core": "file:../HTML-Widget",
     "@thaerious/logger": "^0.2.1",
+    "@thaerious/parseargs": "^0.5.0",
+    "@thaerious/utility": "^0.0.7",
     "async-mutex": "^0.4.0",
     "bootstrap": "^5.2.2",
     "dotenv": "^16.0.3",
     "express-fileupload": "^1.4.0",
     "express-openid-connect": "^2.8.0",
+    "http-proxy-middleware": "^2.0.6",
+    "mldsp-api": "file:../MLDSP-api",
     "unzipper": "^0.10.11"
   },
   "type": "module"
