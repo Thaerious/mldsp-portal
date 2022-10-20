@@ -1,0 +1,20 @@
+{
+  "components": [
+    {
+      "type": "component",
+      "fullName": "job-pane",
+      "view": "job-pane.ejs",
+      "es6": "JobPane.mjs",
+      "style": {
+        "src": "job-pane.scss",
+        "dest": "job-pane.css"
+      },
+      "dir": {
+        "sub": "mldsp-web/job-pane",
+        "src": "client-src/mldsp-web/job-pane"
+      },
+      "package": "mldsp-web",
+      "tagName": "job-pane"
+    }
+  ]
+}

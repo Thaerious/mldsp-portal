@@ -1,7 +1,7 @@
 "use strict";
 
 import CONST from "/shared/constants.js";
-import {removeResult, getJobs, getNumericalRepresentations, getDataSetNames, getCGRKValue, submitCalculation} from "./scripts/externals.mjs";
+import {removeResult, getNumericalRepresentations, getDataSetNames, getCGRKValue, submitCalculation} from "./scripts/externals.mjs";
 import cloneTemplate from "./scripts/cloneTemplate.mjs";
 import showUploadDialog from "./scripts/upload.mjs";
 
@@ -13,7 +13,6 @@ window.ModalConfirm = ModalConfirm;
         loadOptions(await getDataSetNames(), "#datasetname");
         loadOptions(getNumericalRepresentations(), "#num_repr");
         loadOptions(getCGRKValue(), "#cgr_k_val");
-        loadJobs("#jobs-container");
         document.querySelector("#upload-button").addEventListener("click", ()=>showUploadDialog());
         document.querySelector("#start-button").addEventListener("click", prepareCalculation);
     });
@@ -41,38 +40,6 @@ async function prepareCalculation(){
     await loadJobs("#jobs-container");
 }
 
-async function loadJobs(containerName = "#jobs-container"){
-    const container = document.querySelector(containerName);
-    const jobs = await getJobs();
-    
-    // clear previous jobs
-    document.querySelector(containerName).innerHTML = "";
-
-    for (const job in jobs.data){
-        addJobItem(jobs.data[job]);
-    }
-}
- 
-function addJobItem(result) {
-    const clone = cloneTemplate("#result-item-template", "#jobs-container");
-    clone.setAttribute("data-id", result.jobid);
-    clone.querySelector(".resultname").innerHTML = `${result.jobname} ${result.dataset}`;
-
-    if (result.status === "pending"){
-        clone.querySelector(".select").classList.add("disabled");
-        clone.querySelector(".remove").classList.add("disabled");
-    }
-
-    clone.querySelector(".select").addEventListener("click", (event)=>{
-        window.open(`/analytics?jobid=${result.jobid}`);
-    });
-
-    clone.querySelector(".remove").addEventListener("click", async (event)=>{
-        await removeResult(result.jobid);
-        await loadJobs();
-    });
-}
-window.addJobItem = addJobItem;
 /**
  * Create <option> element from names, inserting into <select> element 'container'.
  * @param {Array} names

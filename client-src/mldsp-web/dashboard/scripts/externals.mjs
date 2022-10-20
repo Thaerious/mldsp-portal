@@ -43,16 +43,6 @@ async function getResults(jobid){
     return await response.json();
 }
 
-async function getJobs() {
-    // const response = await fetch(CONST.URL.GET_JOBS, {
-    //     method: "POST",
-    // });
-
-    // const r = await response.json();
-    return[];
-    // return r;
-}
-
 function getCGRKValue() {
     return [3, 4, 5, 6, 7, 8];
 }
@@ -103,4 +93,4 @@ async function removeResult(jobid){
     return r;    
 }
 
-export { removeResult, getResults, getJobs, getNumericalRepresentations, getDataSetNames, getCGRKValue, submitCalculation };
+export { removeResult, getResults, getNumericalRepresentations, getDataSetNames, getCGRKValue, submitCalculation };

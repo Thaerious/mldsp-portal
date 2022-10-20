@@ -21,6 +21,7 @@
     "express-openid-connect": "^2.8.0",
     "http-proxy-middleware": "^2.0.6",
     "mldsp-api": "file:../MLDSP-api",
+    "stream-array": "^1.1.2",
     "unzipper": "^0.10.11"
   },
   "type": "module"

@@ -5,7 +5,6 @@ import pkg from "express-openid-connect";
 import { mkdirif } from "@thaerious/utility";
 import { routeFactory } from "mldsp-api";
 import fileUpload from "express-fileupload";
-import Path from "path";
 
 const { requiresAuth } = pkg;
 const route = express.Router();

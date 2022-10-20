@@ -1,6 +1,5 @@
 import express from "express";
 import CONST from "../constants.js";
-import FS from "fs";
 import pkg from "express-openid-connect";
 import { mkdirif } from "@thaerious/utility";
 import { routeFactory } from "mldsp-api";
