@@ -1,9 +1,13 @@
+import dotenv from "dotenv";
 import Express from "express";
 import http from "http";
 import FS from "fs";
 import Path from "path";
 import CONST from "./constants.js";
 import logger from "./setupLogger.js";
+import { auth } from "express-openid-connect";
+
+dotenv.config();
 
 class Server {
     async init (path = CONST.PATH.ROUTES) {
@@ -17,7 +21,7 @@ class Server {
         return this;
     }
 
-    start (port = 8000, ip = `0.0.0.0`) {
+    start (port = process.env.PORT, ip = `0.0.0.0`) {
         this.server = http.createServer(this.app);
         this.server.listen(port, ip, () => {
             logger.standard(`Listening on port ${port}`);

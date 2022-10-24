@@ -4,6 +4,11 @@ import { WidgetMiddleware } from "@html-widget/core"
 const router = express.Router();
 const middleware = new WidgetMiddleware();
 
-router.use((req, res, next) => middleware.middleware(req, res, next));
+router.use((req, res, next) => {
+    const data = {
+        isAuthenticated : req.oidc.isAuthenticated()
+    }
+    middleware.middleware(req, res, next, data);
+});
 
 export default router;

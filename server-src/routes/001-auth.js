@@ -1,16 +1,26 @@
 import Express from "express";
 import pkg from "express-openid-connect";
-import config from "../constants.js";
 
 const { auth } = pkg;
-const apiRouter = Express.Router();
+const route = Express.Router();
 
-apiRouter.use(auth(config.auth));
+const authOptions = {
+    authRequired: false,
+    auth0Logout: true,
+    baseURL: `http://localhost:${process.env.PORT}`,
+    routes: {
+        callback: `/success`,
+        postLogoutRedirect: `/index`,
+        login: false,
+    }
+};
+
+route.use(auth(authOptions));
 
 // Middleware to make the `user` object available for all views
-apiRouter.use(function (req, res, next) {
+route.use(function (req, res, next) {
     res.locals.user = req.oidc.user;
     next();
 });
 
-export default apiRouter;
+export default route;
