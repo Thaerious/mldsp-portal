@@ -5,6 +5,7 @@ import pkg from "express-openid-connect";
 import { mkdirif } from "@thaerious/utility";
 import { routeFactory } from "mldsp-api";
 import fileUpload from "express-fileupload";
+import Path from "path";
 
 const { requiresAuth } = pkg;
 const route = express.Router();
@@ -19,8 +20,15 @@ function saveDataset(req) {
     if (!req.files) throw new Error("file not found");
     const file = req.files.file;
 
-    const savePath = mkdirif(CONST.DATA.USER, req.oidc.user.email, file.name);
+    const savePath = mkdirif(datasetPath(req.oidc.user.email, file.name));
+    if (FS.existsSync(savePath)) {
+        throw new Error(`Dataset already exists: ${file.name}`);
+    }
     FS.writeFileSync(savePath, file.data);
 }
 
-export default route;
+function datasetPath(userid, filename) {
+    return Path.join(CONST.DATA.USER, userid, filename);
+}
+
+export {route as default, datasetPath}

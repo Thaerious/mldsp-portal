@@ -1,17 +1,6 @@
 <div class="home-section">
     <div class="grid-container">
-        <div class="flex-column">
-            <h1>Datasets</h1>
-
-            <form id="upload-form" class="phantom" method="post" action="/upload_dataset" enctype="multipart/form-data">
-                <input id="upload-dialog" type="file">
-                <input id="submit-upload" type="submit">
-            </form>
-
-            <select id="datasetname"></select>
-            <button id="start-button" class="custom-button green">Process Selected Dataset</button>
-            <button id="upload-button" class="custom-button orange">Upload Dataset</button>
-        </div>
+        <dataset-pane></dataset-pane>
 
         <div class="flex-column">
             <h1>Input Parameters</h1>

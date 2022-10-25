@@ -15,8 +15,10 @@ route.use(CONST.URL.LIST_DATASETS,
 
 async function listDatasets(req) {
     const path = mkdirif(CONST.DATA.USER, req.oidc.user.email);    
-    const files = [...getDataFiles(path), ...getDataFiles(CONST.DATA.DEFAULT)];
-    return { files: files };
+    return { 
+        user: getDataFiles(path),
+        default: getDataFiles(CONST.DATA.DEFAULT)
+    };
 }
 
 export default route;

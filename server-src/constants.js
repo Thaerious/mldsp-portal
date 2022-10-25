@@ -12,7 +12,8 @@ const config = {
     },
     URL: {
         LIST_DATASETS: "/list_datasets",
-        UPLOAD_ZIP_DATA: "/upload_zip_data"
+        UPLOAD_ZIP_DATA: "/upload_zip_data",
+        REMOVE_DATASET: "/remove_dataset"
     },
     api: {
         PRESET_DATASET_DIR: process.env.DATA_PRESET || "data/default",

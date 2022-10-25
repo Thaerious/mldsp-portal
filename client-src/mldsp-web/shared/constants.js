@@ -10,6 +10,7 @@ export default {
         START_JOB: "/start_job",
         SET_VALUE: "/set_value",
         ALL_JOBS: "/all_jobs",
-        RETRIEVE_RESULTS: "/retrieve_results"        
+        RETRIEVE_RESULTS: "/retrieve_results",
+        REMOVE_DATASET: "/remove_dataset"
     }
 }

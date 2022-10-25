@@ -1,7 +1,7 @@
 "use strict";
 
 import CONST from "/shared/constants.js";
-import {removeResult, getNumericalRepresentations, getDataSetNames, getCGRKValue, submitCalculation} from "./scripts/externals.mjs";
+import {removeResult, getNumericalRepresentations, getCGRKValue, submitCalculation} from "./scripts/externals.mjs";
 import cloneTemplate from "./scripts/cloneTemplate.mjs";
 import showUploadDialog from "./scripts/upload.mjs";
 
@@ -10,11 +10,10 @@ window.ModalConfirm = ModalConfirm;
 
 (() => {
     window.addEventListener("load", async() => {
-        loadOptions(await getDataSetNames(), "#datasetname");
         loadOptions(getNumericalRepresentations(), "#num_repr");
         loadOptions(getCGRKValue(), "#cgr_k_val");
-        document.querySelector("#upload-button").addEventListener("click", ()=>showUploadDialog());
-        document.querySelector("#start-button").addEventListener("click", prepareCalculation);
+        // document.querySelector("#upload-button").addEventListener("click", ()=>showUploadDialog());
+        // document.querySelector("#start-button").addEventListener("click", prepareCalculation);
     });
 })();
 

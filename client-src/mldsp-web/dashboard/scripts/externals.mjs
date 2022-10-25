@@ -21,14 +21,6 @@ function getNumericalRepresentations() {
     ];
 }
 
-async function getDataSetNames() {
-    const response = await fetch(CONST.URL.LIST_DATASETS, {
-        method: "POST",
-    });    
-    const r = await response.json();    
-    return [...r.files];
-}
-
 async function getResults(jobid){
     const response = await fetch(CONST.URL.GET_RESULTS, {
         method: "POST",
@@ -93,4 +85,4 @@ async function removeResult(jobid){
     return r;    
 }
 
-export { removeResult, getResults, getNumericalRepresentations, getDataSetNames, getCGRKValue, submitCalculation };
+export { removeResult, getResults, getNumericalRepresentations, getCGRKValue, submitCalculation };

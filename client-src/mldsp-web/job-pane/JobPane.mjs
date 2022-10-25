@@ -8,7 +8,7 @@ class JobPane extends WidgetElement {
     }
 
     ready() {
-        console.log("job pane ready");
+        // console.log("job pane ready");
         this.loadJobs();
     }
 
@@ -46,7 +46,7 @@ class JobPane extends WidgetElement {
 }
 
 async function getJobs() {
-    console.log(CONST);
+    // console.log(CONST);
     const response = await fetch(CONST.URL.LIST_JOBS, {
         method: "POST",
         headers: {
@@ -55,7 +55,7 @@ async function getJobs() {
     });
 
     const r = await response.json();
-    console.log(r);
+    // console.log(r);
     return r;
 }
 
