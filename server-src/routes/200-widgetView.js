@@ -6,7 +6,7 @@ const { requiresAuth } = eoc;
 const router = express.Router();
 const middleware = new WidgetMiddleware();
 
-router.use("/index", (req, res, next) => {
+router.use("/index|/test", (req, res, next) => {
     const data = {
         isAuthenticated : req.oidc.isAuthenticated()
     }

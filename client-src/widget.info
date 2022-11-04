@@ -9,7 +9,7 @@
       "path": "/bootstrap"
     },
     "mldsp-api": {
-      "file": "/mldsp-api/src/index.js",
+      "file": "/mldsp-api/src/constants.js",
       "path": "/mldsp-api"
     }
   }

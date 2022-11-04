@@ -1,5 +1,6 @@
 import WidgetElement from "@html-widget/core";
 import CONST from "/shared/constants.js";
+import API_CONST from "mldsp-api";
 
 class JobPane extends WidgetElement {
 
@@ -7,41 +8,71 @@ class JobPane extends WidgetElement {
         super("job-pane-template");
     }
 
-    ready() {
-        // console.log("job pane ready");
-        this.loadJobs();
+    async ready() {
+        await this.loadJobs();
+        this.updateButtons();
+
+        this.dom.jobsList.addEventListener("change", event => {
+            this.updateButtons();
+        });
+
     }
 
-    async loadJobs(containerName = "#jobs-container") {
-        const container = document.querySelector(containerName);
-        const jobs = await getJobs();
+    updateButtons() {
+        const index = this.dom.jobsList.selectedIndex;
+        if (index == -1) return;
+        const element = this.dom.jobsList.options[index];
+        const jobid = element.getAttribute("data-jobid");
+        const record = this.jobs[jobid]
+        console.log(record);
 
+        if (record.status === API_CONST.PENDING) {
+            this.dom.viewButton.classList.add("disabled");
+            this.dom.deleteButton.classList.add("disabled");
+        }
+        else if (record.status === API_CONST.COMPLETE) {
+            this.dom.viewButton.classList.remove("disabled");
+            this.dom.deleteButton.classList.remove("disabled");
+        }
+    }
+
+    async loadJobs() {
         // clear previous jobs
-        this.querySelector(containerName).innerHTML = "";
+        this.dom.jobsList.innerHTML = "";
+        this.jobs = {};
 
-        for (const job in jobs.data) {
-            addJobItem(jobs.data[job]);
+        const jobs = await getJobs();
+        for (const job in jobs.records) {
+            this.addJobItem(jobs.records[job]);
         }
     }
 
-    addJobItem(result) {
-        const clone = cloneTemplate("#result-item-template", "#jobs-container");
-        clone.setAttribute("data-id", result.jobid);
-        clone.querySelector(".resultname").innerHTML = `${result.jobname} ${result.dataset}`;
+    addJobItem(record) {
+        const element = document.createElement("option");
+        element.setAttribute("value", record.desc);
+        element.setAttribute("data-jobid", record.jobid);
+        element.innerHTML = `${record.desc} (${record.jobid})`;
+        this.dom.jobsList.append(element);
 
-        if (result.status === "pending") {
-            clone.querySelector(".select").classList.add("disabled");
-            clone.querySelector(".remove").classList.add("disabled");
-        }
+        this.jobs[record.jobid] = record;
 
-        clone.querySelector(".select").addEventListener("click", (event) => {
-            window.open(`/analytics?jobid=${result.jobid}`);
-        });
+        // const clone = cloneTemplate("#result-item-template", "#jobs-container");
+        // clone.setAttribute("data-id", result.jobid);
+        // clone.querySelector(".resultname").innerHTML = `${result.jobname} ${result.dataset}`;
 
-        clone.querySelector(".remove").addEventListener("click", async (event) => {
-            await removeResult(result.jobid);
-            await loadJobs();
-        });
+        // if (result.status === "pending") {
+        //     clone.querySelector(".select").classList.add("disabled");
+        //     clone.querySelector(".remove").classList.add("disabled");
+        // }
+
+        // clone.querySelector(".select").addEventListener("click", (event) => {
+        //     window.open(`/analytics?jobid=${result.jobid}`);
+        // });
+
+        // clone.querySelector(".remove").addEventListener("click", async (event) => {
+        //     await removeResult(result.jobid);
+        //     await loadJobs();
+        // });
     }
 }
 

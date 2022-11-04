@@ -1,7 +1,9 @@
 <template id="job-pane-template">
     <link rel="stylesheet" href="/mldsp-web/job-pane/job-pane.css">
-    <div>
+    <div class="flex-column">
         <h1>Jobs</h1>
-        <ul class="list-group" id="jobs-container"></ul>
+        <select id="jobs-list"></select>
+        <button id="view-button" class="custom-button green" disabled>View Result</button>
+        <button id="delete-button" class="custom-button red" disabled>Delete Result</button>        
     </div>
 </template>

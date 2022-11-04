@@ -1,5 +1,4 @@
 import dotenv from "dotenv";
-import { API_CONST } from "mldsp-api";
 
 dotenv.config();
 
