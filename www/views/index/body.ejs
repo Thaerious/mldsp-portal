@@ -1,0 +1,60 @@
+<header class="header">
+    <div class="overlay has-fade hide-for-desktop"></div>
+
+    <nav class="flex flex-jc-sb flex-ai-c container container--pall">
+        <a href="/" class="header__logo logo">
+            <h3>MLDSP</h3>
+        </a>
+
+        <div class="header__links hide-for-mobile">
+            <a href="#">About</a>
+            <a href="#">How It Works</a>
+            <a href="#">Publications</a>
+            <a href="#">Contact</a>
+            <% if (locals.isAuthenticated) { %>
+                <a href="/logout" class="btn-red">Logout</a>
+                <a href="/dashboard" class="btn-green">Dashboard</a>
+            <% } else { %>
+                <a href="/login" class="btn-red">Login</a>
+            <% } %>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero__image"></div>
+
+            <div class="hero__text container--pall">
+                <h3>Advanced Platform</h3>
+                <h1>Machine Learning With Digital Signal Processing</h1>
+                <p>
+                    Machine Learning with Digital Signal Processing is an open-source, alignment-free, ultrafast,
+                    computationally lightweight,
+                    and standalone software tool for comparison and analysis of DNA sequences.
+                </p>
+                <a href="#" class="btn-red">About Us</a>
+            </div>
+        </div>
+    </section>
+
+    <div id="banner" class="center">
+        <img src="img/compute_c.png" class="banner-image" />
+        <img src="img/western.png" class="banner-image" />
+        <img src="img/waterloo2.png" class="banner-image" />
+    </div>
+
+    <section class="features">
+        <div class="container">
+            <div class="features__text container--pall">
+                <h2>How It Works</h2>
+                <p>
+                    Our aim is to provide an open-source, alignment-free, ultrafast, computationally lightweight,
+                    and standalone software tool for comparison and analysis of DNA sequences.
+                </p>
+            </div>
+
+            <div class="features__list container--pall">
+                <li class="featureTap active">Alignment-free</li>
+                <li class="featureTap">Ultrafast</li>
+                <li class="featureTap">Lightweight</li>
+            </div>

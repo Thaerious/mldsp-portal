@@ -1,0 +1,20 @@
+{
+  "components": [
+    {
+      "type": "component",
+      "fullName": "dataset-pane",
+      "view": "dataset-pane.ejs",
+      "es6": "DatasetPane.mjs",
+      "style": {
+        "src": "dataset-pane.scss",
+        "dest": "dataset-pane.css"
+      },
+      "dir": {
+        "sub": "mldsp-web/dataset-pane",
+        "src": "client-src/mldsp-web/dataset-pane"
+      },
+      "package": "mldsp-web",
+      "tagName": "dataset-pane"
+    }
+  ]
+}

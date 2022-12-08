@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/bootstrap/dist/js/bootstrap.bundle.min.js"></script>    
+    <link rel="stylesheet" href="/mldsp-web/dashboard/dashboard.css">
+    <script type="importmap">
+        <%- include(widget.lib_file) %>
+    </script>
+</head>
+<body>
+    <script type="module" src="/mldsp-web/dashboard/Dashboard.mjs"></script>
+    <%- include(widget.template_file) %>
+    <%- include('./body.ejs'); %>
+</body>
+</html>

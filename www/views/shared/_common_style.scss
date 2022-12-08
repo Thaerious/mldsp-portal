@@ -1,0 +1,30 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;    
+}
+
+h1{
+    text-align: center;
+    font-weight: bolder;
+}
+
+.phantom{
+    display: none;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    background-color: rgb(195, 244, 255);
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    align-items: center;
+
+    * {
+        width: 80%;
+    }
+}

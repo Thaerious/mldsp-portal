@@ -1,0 +1,19 @@
+{
+  "components": [
+    {
+      "type": "view",
+      "fullName": "index",
+      "view": "index.ejs",
+      "es6": "Index.mjs",
+      "style": {
+        "src": "index.scss",
+        "dest": "index.css"
+      },
+      "dir": {
+        "sub": "mldsp-web/index",
+        "src": "client-src/mldsp-web/index"
+      },
+      "package": "mldsp-web"
+    }
+  ]
+}
