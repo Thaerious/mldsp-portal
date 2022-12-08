@@ -24,7 +24,6 @@ class JobPane extends WidgetElement {
         const element = this.dom.jobsList.options[index];
         const jobid = element.getAttribute("data-jobid");
         const record = this.jobs[jobid]
-        console.log(record);
 
         if (record.status === API_CONST.PENDING) {
             this.dom.viewButton.classList.add("disabled");

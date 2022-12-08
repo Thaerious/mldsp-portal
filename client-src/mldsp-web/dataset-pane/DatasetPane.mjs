@@ -20,6 +20,8 @@ class DatasetPane extends WidgetElement {
         this.dom.removeButton.addEventListener("click", async () => await this.removeDataset());
         this.dom.uploadButton.addEventListener("click", async () => this.uploadDataset());
         this.dom.startButton.addEventListener("click", async () => this.submitJob());
+
+        this.dom.justUploadButton.addEventListener("click", async () => this.sendDataToAPI());
     }
 
     updateButtons() {
@@ -97,7 +99,17 @@ class DatasetPane extends WidgetElement {
 
     async submitJob() {
         const jobid = (await postAPPJ(CONST.URL.CREATE_JOB)).jobid;
-        await postMPFD(CONST.URL.UPLOAD_DATA, { filename: this.dom.datasetList.value });
+        await postAPPJ(CONST.URL.UPLOAD_DATA, {
+            filename: this.dom.datasetList.value,
+            jobid : jobid
+        });
+    }
+
+    async sendDataToAPI() {
+        await postAPPJ(CONST.URL.UPLOAD_DATA, {
+            filename: this.dom.datasetList.value,
+            jobid : 0
+        });        
     }
 
     /**

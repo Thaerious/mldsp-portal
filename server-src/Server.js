@@ -5,7 +5,6 @@ import FS from "fs";
 import Path from "path";
 import CONST from "./constants.js";
 import logger from "./setupLogger.js";
-import { auth } from "express-openid-connect";
 
 dotenv.config();
 
