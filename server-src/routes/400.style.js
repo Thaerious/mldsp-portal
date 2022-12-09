@@ -14,7 +14,7 @@ const STYLE_EXT = process.env.STYLE_EXT || ".scss";
 /**
  * Render scss files on demand.
  * If the .scss file is older than the .css file, it will get rendered.
- * It will search the SCSS_SRC directory for a path matching the url.
+ * The SCSS_SRC directory is searched for a path matching the url.
  * The resulting .css file will be placed in the CSS_COMPILED_DIR.
  * Include files can be placed in the SCSS_SRC or NODE_MODULES directories.
  * This middleware will create the destination directory if it doesn't exist.
@@ -27,13 +27,13 @@ router.use("*.css", (req, res, next) => {
     const srcFullPath = Path.join(SCSS_SRC, destParsed.dir, destParsed.name + STYLE_EXT);
     const destFullPath = Path.join(CSS_COMPILED_DIR, req.originalUrl)
 
-    // Reject if there is no matching .scss file.
+    // Terminate if there is no matching .scss file.
     if (!FS.existsSync(srcFullPath)) {
         logger.verbose(`  \\_ no source: ${srcFullPath}`);
         return next();
     }
 
-    // Reject if the .css file is newer than the .scss file.
+    // Terminate if the .css file is newer than the .scss file.
     if (FS.existsSync(destFullPath)) {
         const srcStat = FS.statSync(srcFullPath);
         const destStat = FS.statSync(destFullPath);        
