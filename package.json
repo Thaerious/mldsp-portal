@@ -4,7 +4,9 @@
   "description": "",
   "main": "server-src/main.js",
   "scripts": {
-    "server": "nodejs server-src/main.js"
+    "server": "nodejs server-src/main.js",
+    "index-style": "sass www/views/index/index.scss www/compiled/index/index.css --load-path=node_modules",
+    "dashboard-style": "sass www/views/dashboard/dashboard.scss www/compiled/dashboard/dashboard.css --load-path=node_modules"
   },
   "author": "",
   "license": "ISC",
