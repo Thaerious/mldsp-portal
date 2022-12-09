@@ -13,7 +13,7 @@ class Server {
         logger.verbose("Initialize Server");        
         this.app = Express();
 
-        this.app.set(`views`, `www/linked`);
+        this.app.set(`views`, `www/views`);
         this.app.set(`view engine`, `ejs`);
 
         await this.loadRoutes(path);
@@ -46,8 +46,11 @@ class Server {
         for (const entry of contents) {
             const fullpath = Path.join(process.cwd(), path, entry);
             const { default: route } = await import(fullpath);
-            this.app.use(route);
-            logger.verbose(`route ${fullpath}`);        
+            try {
+                this.app.use(route);
+            } catch (ex) {
+                throw `route ${fullpath} did not load`;
+            }
         }        
     }
 }

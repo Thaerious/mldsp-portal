@@ -3,7 +3,7 @@ import CONST from "../constants.js";
 import FS from "fs";
 import pkg from "express-openid-connect";
 import { routeFactory, getArg } from "mldsp-api";
-import { datasetPath } from "./300-uploadDatasets.js";
+import { datasetPath } from "./300.uploadDatasets.js";
 import bodyParser from "body-parser";
 
 const { requiresAuth } = pkg;
