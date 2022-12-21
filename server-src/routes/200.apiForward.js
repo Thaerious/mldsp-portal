@@ -1,4 +1,4 @@
-import { API_CONST } from "mldsp-api";
+import {API_CONST} from "mldsp-api";
 import CONST from "../constants.js";
 import express from "express";
 import bodyParser from "body-parser";
@@ -15,23 +15,20 @@ let proxyOptions = {
     onProxyReq: appendUserID
 };
 
-for (const key in API_CONST.URL) {
+for (const key in CONST.FORWARD_URLS) {
     route.use(
-        API_CONST.URL[key],
+        CONST.FORWARD_URLS[key],
         bodyParser.json(),
         createProxyMiddleware(proxyOptions)
     );
 }
 
 async function appendUserID(proxyReq, req) {
-    console.log("appendUserID");
-    console.log(req.body);
-
     const args = {
         ...req.body,
         userid: req.oidc.user.email
     }
-
+    console.log(args);
     const formData = new FormData();
 
     Object.keys(args).map(key => formData.append(key, args[key]));
@@ -49,31 +46,6 @@ async function appendUserID(proxyReq, req) {
     await proxyReq.write(body);
     proxyReq.end();
 }
-
-// async function appendFile(proxyReq, req, res) {
-//     console.log("appendFile");
-
-//     const args = {
-//         ...req.body,
-//         userid: req.oidc.user.email
-//     }
-//     console.log(req.body);
-
-//     const filepath = getFilePath(req.body.filename + ".zip", req.oidc.user.email);
-//     const formData = new FormData();
-
-//     Object.keys(args).map(key => formData.append(key, args[key]));
-
-//     formData.append('fileupload', FS.readFileSync(filepath), req.body.filename + ".zip");
-
-//     proxyReq.setHeader('content-type', `multipart/form-data; boundary=${formData.getBoundary()}`);
-//     proxyReq.setHeader('content-length', formData.getBuffer().length);
-
-//     const body = formData.getBuffer().toString("utf-8");
-//     await proxyReq.write(body);
-
-//     proxyReq.end();
-// }
 
 function getFilePath(filename, username) {
     const defpath = Path.join(CONST.DATA.DEFAULT, filename);

@@ -45,6 +45,7 @@ class Server {
 
         for (const entry of contents) {
             const fullpath = Path.join(process.cwd(), path, entry);
+            logger.verbose(`route ${fullpath}`); 
             const { default: route } = await import(fullpath);
             try {
                 this.app.use(route);

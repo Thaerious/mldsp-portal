@@ -4,6 +4,8 @@ import sass from "sass";
 import FS from "fs";
 import { mkdirif } from "@thaerious/utility";
 import logger from "../setupLogger.js";
+import ParseArgs from "@thaerious/parseargs";
+const args = new ParseArgs().run();
 
 const router = Express.Router();
 const SCSS_SRC = process.env.SCSS_SRC || "www/views";
@@ -37,7 +39,8 @@ router.use("*.css", (req, res, next) => {
     if (FS.existsSync(destFullPath)) {
         const srcStat = FS.statSync(srcFullPath);
         const destStat = FS.statSync(destFullPath);        
-        if (srcStat.mtime < destStat.mtime) {
+        
+        if (!args.flags['force-style'] && srcStat.mtime < destStat.mtime) {
             logger.verbose(`  \\_ destination file newer: ${srcFullPath}`);
             return next();
         }

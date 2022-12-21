@@ -91,7 +91,7 @@
         transform: translate(-50%, -50%) scale(0);
         transition: transform 0s;
     }
-    &:disabled {
+    &[disabled='true'] {
         color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.38);
         background-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.12);
         box-shadow: none;

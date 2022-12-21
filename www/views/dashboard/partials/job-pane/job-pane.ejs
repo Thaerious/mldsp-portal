@@ -1,0 +1,27 @@
+<script type="module" src="/dashboard/partials/job-pane/JobPane.mjs"></script>
+<link rel="stylesheet" href="/dashboard/partials/job-pane/job-pane.css">
+<job-pane class="flex-column">
+    <h1>Jobs</h1>
+    <select id="jobs-list"></select>
+    <div id="job-fields">
+        <div class=field>
+            <span class="label">Job ID:</span>
+            <span id="job-id-value" class="value"></span>
+        </div>
+        <div class=field>
+            <span class="label">Description:</span>
+            <span id="description-value" class="value"></span>
+        </div>
+        <div class=field>
+            <span class="label">Status:</span>
+            <span id="status-value" class="value"></span>
+        </div>
+        <span class=field>
+            <span class="label">Data File:</span>
+            <span id="data-file-value" class="value"></span>
+    </div>
+    <div id="job-buttons">
+        <button id="view-button" class="custom-button green">View</button>
+        <button id="delete-button" class="custom-button red">Delete</button>
+    </div>
+</job-pane>

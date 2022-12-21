@@ -1,15 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <script src="/bootstrap/dist/js/bootstrap.bundle.min.js"></script>    
-    <link rel="stylesheet" href="/mldsp-web/dashboard/dashboard.css">
-    <script type="importmap">
-        <%- include(widget.lib_file) %>
-    </script>
+    <script src="/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/dashboard/dashboard.css">
+    <script type="importmap">{
+        "imports" : {
+            "mldsp-api" : "./mldsp-api/src/package.js"
+        }
+    }</script>
 </head>
+
 <body>
-    <script type="module" src="/mldsp-web/dashboard/Dashboard.mjs"></script>
-    <%- include(widget.template_file) %>
-    <%- include('./body.ejs'); %>
+    <script type="module" src="/dashboard/Dashboard.mjs"></script>
+    <%- include('./partials/templates'); %>
+    <%- include('./partials/dashboard_sidebar'); %>
+
+    <div class="home-section">
+        <div class="grid-container">
+            <%- include('./partials/data-pane/data-pane'); %>
+            <%- include('./partials/submit-pane/submit-pane'); %>
+            <%- include('./partials/job-pane/job-pane'); %>
+        </div>
+    </div>    
+    <%- include('./partials/modal_confirm'); %>
 </body>
+
 </html>

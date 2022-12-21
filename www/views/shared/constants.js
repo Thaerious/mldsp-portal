@@ -1,5 +1,5 @@
 export default {
-    URL: {
+    URLS: {
         LIST_DATASETS: "/list_datasets",
         UPLOAD_ZIP_DATA: "/upload_zip_data",
         CREATE_JOB: "/create_job",
@@ -11,6 +11,7 @@ export default {
         SET_VALUE: "/set_value",
         ALL_JOBS: "/all_jobs",
         RETRIEVE_RESULTS: "/retrieve_results",
-        REMOVE_DATASET: "/remove_dataset"
+        REMOVE_DATASET: "/remove_dataset",
+        SUBMIT_JOB: "/submit_job"
     }
 }

@@ -13,7 +13,7 @@ function showUploadDialog(selector = "#upload-form") {
         const formData = new FormData();
         formData.append("file", dialog.files[0]);
 
-        const response = await fetch(CONST.URL.UPLOAD_ZIP_DATA, {
+        const response = await fetch(CONST.URLS.UPLOAD_ZIP_DATA, {
             method: "POST",
             enctype: "multipart/form-data",
             body: formData

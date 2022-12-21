@@ -4,6 +4,7 @@ import CONST from "/shared/constants.js";
 import {removeResult, getNumericalRepresentations, getCGRKValue, submitCalculation} from "./scripts/externals.mjs";
 import cloneTemplate from "./scripts/cloneTemplate.mjs";
 import showUploadDialog from "./scripts/upload.mjs";
+import JobPane from "./partials/job-pane/JobPane.mjs";
 
 import ModalConfirm from "./scripts/ModalConfirm.mjs";
 window.ModalConfirm = ModalConfirm;

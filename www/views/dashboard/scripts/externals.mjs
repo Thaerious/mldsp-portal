@@ -22,7 +22,7 @@ function getNumericalRepresentations() {
 }
 
 async function getResults(jobid){
-    const response = await fetch(CONST.URL.GET_RESULTS, {
+    const response = await fetch(CONST.URLS.GET_RESULTS, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -54,7 +54,7 @@ function getCGRKValue() {
  * See: represenations.txt
  */
 async function submitCalculation(name, dataset, settings) {
-    const response = await fetch(CONST.URL.START_JOB, {
+    const response = await fetch(CONST.URLS.START_JOB, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -71,7 +71,7 @@ async function submitCalculation(name, dataset, settings) {
 }
 
 async function removeResult(jobid){
-    const response = await fetch(CONST.URL.DELETE_JOB, {
+    const response = await fetch(CONST.URLS.DELETE_JOB, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
