@@ -36,10 +36,19 @@ class JobPane extends HTMLElement {
             this.updateFields();
         });
         
+        this.dom.viewButton.addEventListener("click", event => {
+            this.showSelectedAnalytics();
+        });
+
         this.dom.deleteButton.addEventListener("click", event => {
-            console.log("delete");
             this.deleteSelectedJob();
         });
+    }
+
+    showSelectedAnalytics() {
+        if (!this.selectedRecord()) return;
+        const jobid = this.selectedRecord().jobid;
+        window.open(CONST.URLS.ANALYTICS + `?jobid=${jobid}`);
     }
 
     /**
@@ -47,17 +56,19 @@ class JobPane extends HTMLElement {
      * status field.
      */
     updateButtons() {
-        const index = this.dom.jobsList.selectedIndex;
-        if (index == -1) return;
-        const element = this.dom.jobsList.options[index];
-        const jobid = element.getAttribute("data-jobid");
-        const record = this.jobs[jobid]
+        if (!this.selectedRecord()) {
+            this.dom.viewButton.setAttribute("disabled", true);
+            this.dom.deleteButton.setAttribute("disabled", true);
+            return;
+        }
 
-        if (record.status === API_CONST.STATUS.PENDING) {
+        this.dom.deleteButton.removeAttribute("disabled");
+
+        if (this.selectedRecord().status === API_CONST.STATUS.PENDING) {
             this.dom.viewButton.setAttribute("disabled", true);
         }
-        else if (record.status === API_CONST.STATUS.COMPLETE) {
-            this.dom.viewButton.setAttribute("disabled", false);
+        else if (this.selectedRecord().status === API_CONST.STATUS.COMPLETE) {
+            this.dom.viewButton.removeAttribute("disabled");
         }
     }
 
@@ -74,7 +85,13 @@ class JobPane extends HTMLElement {
      */
     updateFields() {
         const record = this.selectedRecord();
-        if (!record) return;
+        if (!record) {
+            this.dom.jobIdValue.innerText = "";
+            this.dom.descriptionValue.innerText = "";
+            this.dom.statusValue.innerText = "";
+            this.dom.dataFileValue.innerText = "";   
+            return;
+        }
         this.dom.jobIdValue.innerText = record.jobid;
         this.dom.descriptionValue.innerText = record.desc;
         this.dom.statusValue.innerText = record.status;
@@ -108,8 +125,10 @@ class JobPane extends HTMLElement {
     }
 
     async deleteSelectedJob() {
+        if (!this.selectedRecord()) return;
+
         const r = await postAppJSON(
-            API_CONST.FORWARD_URLS.DELETE_JOB,
+            CONST.API.DELETE_JOB,
             { "jobid": this.selectedRecord().jobid }
         );
    
@@ -119,7 +138,7 @@ class JobPane extends HTMLElement {
 }
 
 async function getJobs() {
-    const response = await fetch(CONST.URLS.LIST_JOBS, {
+    const response = await fetch(CONST.API.LIST_JOBS, {
         method: "POST",
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'

@@ -109,18 +109,17 @@ class DataPane extends HTMLElement {
     async submitJob() {
         const index = this.dom.datasetList.selectedIndex;
         const optionElement = this.dom.datasetList.childNodes[index];        
-        console.log("submit job");
 
-        await postAppJSON(
+        const r = await postAppJSON(
             CONST.URLS.SUBMIT_JOB,
             {
                 filename: this.dom.datasetList.value,
                 source: optionElement.getAttribute("data-source")
             }
         );
+
+        console.log(r);
         
-        console.log("job submitted");
-        console.log(document.querySelector("job-pane"));
         document.querySelector("job-pane").refresh();
     }
 

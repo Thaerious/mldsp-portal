@@ -1,28 +1,15 @@
 import dotenv from "dotenv";
+import WWW_CONSTANTS from "../www/views/shared/constants.js";
 
 dotenv.config();
 
 const config = {
+    ...WWW_CONSTANTS,
     status: {
         ERROR: "error",
         OK: "ok",
         PENDING: "pending",
         COMPLETE: "complete",
-    },
-    FORWARD_URLS: {
-        GET_JOB_RECORD: "/get_job_record",
-        LIST_JOBS: "/list_jobs",
-        DELETE_JOB: "/delete_job",
-        SET_VALUE: "/set_value",
-        ALL_JOBS: "/all_jobs",
-        RETRIEVE_RESULTS: "/retrieve_results",
-        STATUS: "/status"        
-    },
-    URLS: {
-        LIST_DATASETS: "/list_datasets",
-        UPLOAD_ZIP_DATA: "/upload_zip_data",
-        REMOVE_DATASET: "/remove_dataset",
-        SUBMIT_JOB: "/submit_job"
     },
     api: {
         PRESET_DATASET_DIR: process.env.DATA_PRESET || "data/default",

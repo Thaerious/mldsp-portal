@@ -15,9 +15,9 @@ let proxyOptions = {
     onProxyReq: appendUserID
 };
 
-for (const key in CONST.FORWARD_URLS) {
+for (const key in CONST.API) {
     route.use(
-        CONST.FORWARD_URLS[key],
+        CONST.API[key],
         bodyParser.json(),
         createProxyMiddleware(proxyOptions)
     );

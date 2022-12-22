@@ -25,6 +25,7 @@
     "http-proxy-middleware": "^2.0.6",
     "mldsp-api": "file:../MLDSP-api",
     "multer": "^1.4.5-lts.1",
+    "plotly.js-dist": "^2.16.5",
     "sass": "^1.56.1",
     "stream-array": "^1.1.2",
     "unzipper": "^0.10.11"

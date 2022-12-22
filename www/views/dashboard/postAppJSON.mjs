@@ -1,5 +1,4 @@
 async function postAppJSON(url, data = {}) {
-    console.log("fetch " + url);
     const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -7,11 +6,7 @@ async function postAppJSON(url, data = {}) {
         },
         body: JSON.stringify(data)
     });
-    console.log("midway");
-    const r = await response.json();  
-    console.log("done");
-    console.log(r);
-    return r;
+    return response.json();
 }
 
 export default postAppJSON;

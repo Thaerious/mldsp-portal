@@ -15,8 +15,8 @@ router.use("/dashboard$", (req, res, next)=>{
     });
 });
 
-router.use("/results$", (req, res, next)=>{
-    res.render("results/results.ejs", {}, (err, html) => {
+router.use("/analytics$", (req, res, next)=>{
+    res.render("analytics/analytics.ejs", {}, (err, html) => {
         if (err) throw new Error(err); 
         else res.send(html);
     });

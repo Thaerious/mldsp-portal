@@ -10,6 +10,7 @@ function handleResponse(res, route, obj = {}) {
     }, null, 2);
 
     res.write(msg);
+    res.end();
 }
 
 export default handleResponse;
