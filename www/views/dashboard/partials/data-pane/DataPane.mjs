@@ -26,19 +26,14 @@ class DataPane extends HTMLElement {
 
     async ready() {
         this.refresh();
-
-        this.dom.datasetList.addEventListener("change", event => {
-            this.updateButtons();
-        });
-
+        this.dom.datasetList.addEventListener("change", event => this.updateButtons());
         this.dom.removeButton.addEventListener("click", async () => await this.removeDataset());
         this.dom.uploadButton.addEventListener("click", () => this.uploadDataset());
         this.dom.startButton.addEventListener("click", async () => await this.submitJob());
     }
 
     async refresh() {
-        const datasetnames = await this.getDataSetNames();
-        this.loadOptions(datasetnames);
+        this.updateSelector(await this.getDataSetNames());
         this.updateButtons();
     }
 
@@ -52,7 +47,8 @@ class DataPane extends HTMLElement {
         else if (selected.source == "user") {
             this.dom.removeButton.removeAttribute("disabled");
             this.dom.startButton.removeAttribute("disabled");
-        } else {
+        }
+        else {
             this.dom.removeButton.setAttribute("disabled", true);
             this.dom.startButton.removeAttribute("disabled");
         }
@@ -62,6 +58,7 @@ class DataPane extends HTMLElement {
         const index = this.dom.datasetList.selectedIndex;
         if (index == -1) return null;
         const element = this.dom.datasetList.childNodes[index];
+
         return {
             name: element.getAttribute("value"),
             source: element.getAttribute("data-source")
@@ -86,8 +83,7 @@ class DataPane extends HTMLElement {
                 body: formData
             });
 
-            page.loadOptions(await this.getDataSetNames());
-            page.updateButtons();
+            this.refresh();
 
             const r = await response.json();
             if (r.message) ModalConfirm.show(r.message);
@@ -101,11 +97,7 @@ class DataPane extends HTMLElement {
         );
    
         if (r.message) ModalConfirm.show(r.message);
-
-        this.loadOptions(await this.getDataSetNames());
-        this.updateButtons();
-
-        return r;
+        this.refresh();
     }
 
     async getDataSetNames() {
@@ -128,7 +120,8 @@ class DataPane extends HTMLElement {
             CONST.URLS.SUBMIT_JOB,
             {
                 filename: this.dom.datasetList.value,
-                source: optionElement.getAttribute("data-source")
+                source: optionElement.getAttribute("data-source"),
+                description: document.querySelector("#analysisName").value
             }
         );
 
@@ -140,7 +133,7 @@ class DataPane extends HTMLElement {
     * @param {Object} names {user, default}
     * @param {string} container
     */
-    loadOptions(names) {
+    updateSelector(names) {
         this.dom.datasetList.replaceChildren();
 
         for (const listname of ["default", "user"]){

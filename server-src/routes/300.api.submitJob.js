@@ -26,7 +26,8 @@ async function submit(req, res, next) {
     try {
         const userid = req.oidc.user.email;
         const zipPath = Path.join(CONST.DATA[req.body.source.toUpperCase()], req.body.filename + '.zip');
-        const jobid = await create(req.oidc.user.email);
+        const jobid = await createJob(req.oidc.user.email, req.body.description);
+
         await upload(userid, jobid, zipPath);
         await startJob(userid, jobid);
         handleResponse(res, CONST.URLS.SUBMIT_JOB);
@@ -35,9 +36,10 @@ async function submit(req, res, next) {
     }
 }
 
-async function create(userid) {
+async function createJob(userid, description) {
     const form = new FormData();
     form.set('userid', userid);
+    form.set('description', description);
 
     const response = await fetch(createURL, {
         method: 'POST',
