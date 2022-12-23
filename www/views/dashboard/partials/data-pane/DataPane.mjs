@@ -10,7 +10,10 @@ class DataPane extends HTMLElement {
      */
     async connectedCallback() {
         this.detectDOM();
-        window.addEventListener("load", async () => await this.ready(), { once: true });
+        window.addEventListener(
+            "load",
+            async () => await this.ready(), { once: true }
+        );
     }
 
     detectDOM() {
@@ -22,9 +25,7 @@ class DataPane extends HTMLElement {
     }
 
     async ready() {
-        const datasetnames = await this.getDataSetNames()
-        this.loadOptions(datasetnames);
-        this.updateButtons();
+        this.refresh();
 
         this.dom.datasetList.addEventListener("change", event => {
             this.updateButtons();
@@ -35,23 +36,36 @@ class DataPane extends HTMLElement {
         this.dom.startButton.addEventListener("click", async () => await this.submitJob());
     }
 
-    updateButtons() {
-        const value = this.dom.datasetList.value;
+    async refresh() {
+        const datasetnames = await this.getDataSetNames();
+        this.loadOptions(datasetnames);
+        this.updateButtons();
+    }
 
-        if (!value) {
+    updateButtons() {
+        const selected = this.selectedDataSet();
+
+        if (!selected) {
             this.dom.removeButton.setAttribute("disabled", true);
             this.dom.startButton.setAttribute("disabled", true);
-            return;
         }
-
-        const option = this.querySelector(`option[value='${value}']`);
-        const source = option.getAttribute("data-source");
-
-        if (source == "user") {
+        else if (selected.source == "user") {
             this.dom.removeButton.removeAttribute("disabled");
+            this.dom.startButton.removeAttribute("disabled");
         } else {
             this.dom.removeButton.setAttribute("disabled", true);
+            this.dom.startButton.removeAttribute("disabled");
         }
+    }
+
+    selectedDataSet() {
+        const index = this.dom.datasetList.selectedIndex;
+        if (index == -1) return null;
+        const element = this.dom.datasetList.childNodes[index];
+        return {
+            name: element.getAttribute("value"),
+            source: element.getAttribute("data-source")
+        }        
     }
 
     uploadDataset() {
@@ -118,8 +132,6 @@ class DataPane extends HTMLElement {
             }
         );
 
-        console.log(r);
-        
         document.querySelector("job-pane").refresh();
     }
 

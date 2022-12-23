@@ -22,7 +22,6 @@ class JobPane extends HTMLElement {
     }
 
     async refresh() {
-        console.log("refresh");
         await this.loadJobs();
         this.updateButtons();
         this.updateFields()        
