@@ -145,7 +145,6 @@ async function getJobs() {
     });
 
     const r = await response.json();
-    // console.log(r);
     return r;
 }
 

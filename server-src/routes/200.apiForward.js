@@ -1,4 +1,3 @@
-import {API_CONST} from "mldsp-api";
 import CONST from "../constants.js";
 import express from "express";
 import bodyParser from "body-parser";
