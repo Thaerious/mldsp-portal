@@ -21,7 +21,8 @@ const config = {
     filenames: {
         JOB_INFO: "job.info",
         JOB_RESULTS: "results.json",
-        METADATA: "metadata.csv"
+        METADATA: "metadata.csv",
+        SERVER_LIST: "api_servers.json"
     },
     python: {
         MLDSP_EXE: process.env.MLDSP_EXE || "MLDSP",
@@ -49,6 +50,13 @@ const config = {
     PATH: {
         ROUTES : "server-src/routes"
     },
+    JOBS: {
+        ROOT: "./data/user/",
+        DATA_SUB: "data",
+        RESULTS_SUB: "results",
+        RECORD_FILENAME: "record.json",
+        RESULTS_FILENAME: "results.json"
+    },       
     LOC: {
         API: "http://127.0.0.1:7632"
     }
