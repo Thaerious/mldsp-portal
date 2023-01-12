@@ -7,14 +7,15 @@ import { API_CONST } from "mldsp-api";
 import handleError from "../handleError.js";
 import handleResponse from "../handleResponse.js";
 import FS from 'fs';
-// import FormData from "form-data";
+import Jobs from "../Jobs.js";
+
+// Submit a new MLDSP job to the api server.
+// First creates a local job record.
 
 const { requiresAuth } = pkg;
 const route = express.Router();
 
-const uploadURL = Path.join(CONST.LOC.API, API_CONST.URLS.UPLOAD_DATA);
-const createURL = Path.join(CONST.LOC.API, API_CONST.URLS.CREATE_JOB);
-const startURL = Path.join(CONST.LOC.API, API_CONST.URLS.START_JOB);
+const jobs = new Jobs().load();
 
 route.use(CONST.URLS.SUBMIT_JOB,
     bodyParser.json(),
@@ -26,10 +27,10 @@ async function submit(req, res, next) {
     try {
         const userid = req.oidc.user.email;
         const zipPath = Path.join(CONST.DATA[req.body.source.toUpperCase()], req.body.filename + '.zip');
-        const jobid = await createJob(req.oidc.user.email, req.body.description);
+        const record = await createJob(req.oidc.user.email, req.body.description);
 
-        await upload(userid, jobid, zipPath);
-        await startJob(userid, jobid);
+        await upload(record, zipPath);
+        await startJob(record);
         handleResponse(res, CONST.URLS.SUBMIT_JOB);
     } catch (error) {
         handleError(error, CONST.URLS.SUBMIT_JOB, req, res);
@@ -41,24 +42,33 @@ async function createJob(userid, description) {
     form.set('userid', userid);
     form.set('description', description);
 
+    const apiServer = jobs.nextServer();
+    const createURL = Path.join(apiServer.url, API_CONST.URLS.CREATE_JOB);    
+
     const response = await fetch(createURL, {
         method: 'POST',
         body: form
     });
 
-    const data = await response.json();
-    return data.jobid;
+    const record = await response.json();
+    record.server = apiServer;
+
+    jobs.saveRecord(record);
+
+    return record;
 }
 
-async function upload(userid, jobid, filename) {
+async function upload(record, filename) {
+    const uploadURL = Path.join(record.server.url, API_CONST.URLS.UPLOAD_DATA);
+
     const stream = FS.readFileSync(filename);
     const blob = new Blob([stream], {
         type: "application/zip",
     });
 
     const form = new FormData();
-    form.set("userid", userid);
-    form.set("jobid", jobid);
+    form.set("userid", record.userid);
+    form.set("jobid", record.jobid);
     form.set("fileupload", blob, filename);
 
     fetch(uploadURL, {
@@ -67,7 +77,9 @@ async function upload(userid, jobid, filename) {
     });
 }
 
-async function startJob(userid, jobid) {
+async function startJob(record) {
+    const startURL = Path.join(record.server.url, API_CONST.URLS.START_JOB);
+
     const form = new FormData();
     form.set('userid', userid);
     form.set('jobid', jobid);

@@ -55,10 +55,20 @@ const config = {
         DATA_SUB: "data",
         RESULTS_SUB: "results",
         RECORD_FILENAME: "record.json",
-        RESULTS_FILENAME: "results.json"
+        RESULTS_FILENAME: "results.json",
+        STATUS: {
+            ERROR: "error",
+            OK: "ok",
+            PENDING: "pending",
+            COMPLETE: "complete",
+            RUNNING: "running"
+        }  
     },       
     LOC: {
-        API: "http://127.0.0.1:7632"
+        API: {
+            "proxy1": "http://127.0.0.1:9000",
+            "proxy2": "http://127.0.0.1:9001"
+        }
     }
 };
 

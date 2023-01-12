@@ -5,7 +5,6 @@ import FS from "fs";
 import Path from "path";
 import CONST from "./constants.js";
 import logger from "./setupLogger.js";
-import Jobs from "./Jobs.js";
 
 dotenv.config();
 
@@ -18,7 +17,6 @@ class Server {
         this.app.set(`view engine`, `ejs`);
 
         await this.loadRoutes(path);
-        this.jobs = new Jobs().load();
         return this;
     }
 

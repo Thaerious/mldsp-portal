@@ -16,7 +16,6 @@ const options = {
 const args = new ParseArgs().loadOptions(options).run();
 const appLogger = new Logger();
 
-
 appLogger.channel(`standard`).enabled = true;
 appLogger.channel(`error`).enabled = true;
 appLogger.channel(`log`).enabled = true;
@@ -24,9 +23,9 @@ appLogger.channel(`verbose`).enabled = false;
 
 if (args.flags["verbose"]) appLogger.channel(`verbose`).enabled = true;
 
-appLogger.channel(`log`).log = (text) => {
-    FS.appendFileSync("log/log.text", text + "\n");
-}
+// appLogger.channel(`log`).log = (text) => {
+//     FS.appendFileSync("log/log.text", text + "\n");
+// }
 
 appLogger.channel("error").log = function(string){
     console.error("Error: see log files");

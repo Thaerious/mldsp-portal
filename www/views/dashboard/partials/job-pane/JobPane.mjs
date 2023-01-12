@@ -88,13 +88,13 @@ class JobPane extends HTMLElement {
             this.dom.jobIdValue.innerText = "";
             this.dom.descriptionValue.innerText = "";
             this.dom.statusValue.innerText = "";
-            this.dom.dataFileValue.innerText = "";   
-            return;
+            this.dom.dataFileValue.innerText = "";
+        } else {
+            this.dom.jobIdValue.innerText = record.jobid;
+            this.dom.descriptionValue.innerText = record.desc;
+            this.dom.statusValue.innerText = record.status;
+            this.dom.dataFileValue.innerText = record.zipfile;
         }
-        this.dom.jobIdValue.innerText = record.jobid;
-        this.dom.descriptionValue.innerText = record.desc;
-        this.dom.statusValue.innerText = record.status;
-        this.dom.dataFileValue.innerText = record.zipfile;
     }
 
     /**
@@ -108,27 +108,29 @@ class JobPane extends HTMLElement {
         // fill selector
         const jobs = await getJobs();
         console.log(jobs);
-        for (const job in jobs.records) {
-            this.addJobItem(jobs.records[job]);
+        for (const job of jobs.records) {
+            console.log(job);
+            this.addJobItem(job);
         }
     }
 
     addJobItem(record) {
+        const uid = record.server + "-" + record.jobid;
         const element = document.createElement("option");
         element.setAttribute("value", record.desc);
-        element.setAttribute("data-jobid", record.jobid);
-        element.innerHTML = `${record.desc} (${record.jobid})`;
+        element.setAttribute("data-jobid", uid);
+        element.innerHTML = `${record.desc} (${uid})`;
         this.dom.jobsList.append(element);
-
-        this.jobs[record.jobid] = record;
+        this.jobs[uid] = record;
     }
 
     async deleteSelectedJob() {
-        if (!this.selectedRecord()) return;
-
+        const record = this.selectedRecord();
+        if (!record) return;        
+        console.log(record.server + CONST.API.DELETE_JOB);
         const r = await postAppJSON(
-            CONST.API.DELETE_JOB,
-            { "jobid": this.selectedRecord().jobid }
+            record.server + CONST.API.DELETE_JOB,
+            { "jobid": record.jobid }
         );
    
         if (r.message) ModalConfirm.show(r.message);

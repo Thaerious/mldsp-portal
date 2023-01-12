@@ -6,14 +6,15 @@ import getInfoFiles from "./getInfoFiles.js";
 import { mkdirif, fsjson } from "@thaerious/utility";
 import lodash from "lodash";
 
-const mutex = new Mutex();
+const indexMutex = new Mutex();
+const serverMutex = new Mutex();
 
 class JobRecord {
-    constructor(userid, jobid, desc, status = CONST.STATUS.PENDING, settings = {}) {
+    constructor(userid, jobid, desc, status = CONST.JOBS.STATUS.PENDING, settings = {}) {
         this.userid = userid;
         this.jobid = jobid;
         this.desc = desc;
-        this.status = CONST.STATUS.PENDING;
+        this.status = CONST.JOBS.STATUS.PENDING;
         this.settings = settings;
         this.zipfile = "";
         this.server = "";
@@ -87,9 +88,14 @@ class Jobs {
             this.jobStore[record.jobid] = record;
         }
 
-        console.log(CONST.filenames.SERVER_LIST);
-        this.servers = fsjson.load(CONST.filenames.SERVER_LIST);
-        console.log(this.servers);
+        const serverList = fsjson.load(CONST.filenames.SERVER_LIST);
+        this.servers = [];
+        for (const key in serverList) {
+            this.servers.push({
+                "name": key,
+                "url": serverList[key]
+            });
+        }
         return this;
     }
 
@@ -101,7 +107,8 @@ class Jobs {
     async addJob(userid, jobname, dataset, settings = {}) {
         const jobid = await this.nextIndex();
         const record = new JobRecord(userid, jobid, jobname, dataset, settings);
-        this.saveRecord(record)
+        record.server = await this.nextServer();
+        this.saveRecord(record);
         return lodash.cloneDeep(record);
     }
 
@@ -115,12 +122,12 @@ class Jobs {
     /**
      * Remove the job record and the job results directory.
      */
-    deleteJob(jobid) {        
+    deleteJob(jobid) {
         if (!this.hasJob(jobid)) return;
         const record = this.getJobRecord(jobid);
         const path = record.path();
         if (FS.existsSync(path)) FS.rmSync(path, { recursive: true });
-        delete this.jobStore[jobid];    
+        delete this.jobStore[jobid];
     }
 
     /**
@@ -162,7 +169,7 @@ class Jobs {
     }
 
     async nextIndex() {
-        const release = await mutex.acquire();
+        const release = await indexMutex.acquire();
         let index = 0;
         while (this.jobStore[index]) index++;
         release();
@@ -170,6 +177,11 @@ class Jobs {
     }
 
     async nextServer() {
+        const release = await serverMutex.acquire();
+        const nextServer = this.servers.shift();
+        this.servers.push(nextServer);
+        release();
+        return nextServer;
     }
 
     static get instance() {
