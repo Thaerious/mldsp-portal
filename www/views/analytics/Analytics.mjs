@@ -8,11 +8,12 @@ let selectedCMatrix = "";
 
 window.addEventListener("load", async () => {
     const urlParams = new URLSearchParams(window.location.search);
+    const server = urlParams.get("server");
     const jobid = urlParams.get("jobid");
+    const url = `${server}${API_CONST.URLS.RETRIEVE_RESULTS}`;
 
-    const r = await postAppJSON(API_CONST.URLS.RETRIEVE_RESULTS, { jobid: jobid });
-    window.results = r.results;
-    loadView(r.results);
+    const post = await postAppJSON(url, { jobid: jobid });
+    loadView(post.results);
 });
 
 function loadView(data) {

@@ -52,7 +52,6 @@ const config = {
     },
     JOBS: {
         ROOT: "./data/user/",
-        DATA_SUB: "data",
         RESULTS_SUB: "results",
         RECORD_FILENAME: "record.json",
         RESULTS_FILENAME: "results.json",

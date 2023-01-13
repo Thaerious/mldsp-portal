@@ -45,9 +45,10 @@ class JobPane extends HTMLElement {
     }
 
     showSelectedAnalytics() {
-        if (!this.selectedRecord()) return;
+        if (!this.selectedRecord()) return;        
         const jobid = this.selectedRecord().jobid;
-        window.open(CONST.URLS.ANALYTICS + `?jobid=${jobid}`);
+        const server = this.selectedRecord().server;
+        window.open(`${CONST.URLS.ANALYTICS}?server=${server}&jobid=${jobid}`);
     }
 
     /**
@@ -107,9 +108,7 @@ class JobPane extends HTMLElement {
 
         // fill selector
         const jobs = await getJobs();
-        console.log(jobs);
         for (const job of jobs.records) {
-            console.log(job);
             this.addJobItem(job);
         }
     }
@@ -127,7 +126,7 @@ class JobPane extends HTMLElement {
     async deleteSelectedJob() {
         const record = this.selectedRecord();
         if (!record) return;        
-        console.log(record.server + CONST.API.DELETE_JOB);
+
         const r = await postAppJSON(
             record.server + CONST.API.DELETE_JOB,
             { "jobid": record.jobid }

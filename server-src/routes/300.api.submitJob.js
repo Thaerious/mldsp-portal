@@ -25,9 +25,10 @@ route.use(CONST.URLS.SUBMIT_JOB,
 
 async function submit(req, res, next) {
     try {
-        const userid = req.oidc.user.email;
         const zipPath = Path.join(CONST.DATA[req.body.source.toUpperCase()], req.body.filename + '.zip');
         const record = await createJob(req.oidc.user.email, req.body.description);
+
+        console.log(record);
 
         await upload(record, zipPath);
         await startJob(record);
@@ -38,29 +39,33 @@ async function submit(req, res, next) {
 }
 
 async function createJob(userid, description) {
+
     const form = new FormData();
     form.set('userid', userid);
     form.set('description', description);
 
-    const apiServer = jobs.nextServer();
+    const apiServer = await jobs.nextServer();
+
+    console.log(apiServer);
     const createURL = Path.join(apiServer.url, API_CONST.URLS.CREATE_JOB);    
+    console.log(createURL);
 
     const response = await fetch(createURL, {
         method: 'POST',
         body: form
     });
 
-    const record = await response.json();
+    console.log(response);
+    
+    const json = await response.json();
+    const record = json.record;
     record.server = apiServer;
-
-    jobs.saveRecord(record);
-
     return record;
 }
 
 async function upload(record, filename) {
     const uploadURL = Path.join(record.server.url, API_CONST.URLS.UPLOAD_DATA);
-
+console.log(record);
     const stream = FS.readFileSync(filename);
     const blob = new Blob([stream], {
         type: "application/zip",
@@ -81,8 +86,8 @@ async function startJob(record) {
     const startURL = Path.join(record.server.url, API_CONST.URLS.START_JOB);
 
     const form = new FormData();
-    form.set('userid', userid);
-    form.set('jobid', jobid);
+    form.set('userid', record.userid);
+    form.set('jobid', record.jobid);
 
     const response = await fetch(startURL, {
         method: 'POST',
@@ -90,6 +95,7 @@ async function startJob(record) {
     });
 
     const data = await response.json();
+    console.log(data);
     return data.jobid;    
 }
 
