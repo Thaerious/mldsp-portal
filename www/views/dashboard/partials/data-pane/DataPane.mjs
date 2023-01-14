@@ -62,18 +62,16 @@ class DataPane extends HTMLElement {
         return {
             name: element.getAttribute("value"),
             source: element.getAttribute("data-source")
-        }        
+        }
     }
 
     uploadDataset() {
         const dialog = this.dom.uploadForm.querySelector("[type='file']");
 
         this.dom.uploadForm.addEventListener("submit", e => e.preventDefault(), { once: true });
-        dialog.value = null;
-        dialog.addEventListener("change", async () => await formSubmit(this), { once: true });
-        dialog.click();
+        dialog.value = null; // needed so dialog triggers if the same value is selected twice
 
-        async function formSubmit(page) {
+        dialog.addEventListener("change", async () => {
             const formData = new FormData();
             formData.append("file", dialog.files[0]);
 
@@ -83,11 +81,14 @@ class DataPane extends HTMLElement {
                 body: formData
             });
 
-            this.refresh();
+            console.log(this);
 
             const r = await response.json();
             if (r.message) ModalConfirm.show(r.message);
-        }
+            else this.refresh();
+        }, { once: true });
+
+        dialog.click();
     }
 
     async removeDataset() {
@@ -95,7 +96,7 @@ class DataPane extends HTMLElement {
             CONST.URLS.REMOVE_DATASET,
             { filename: this.dom.datasetList.value }
         );
-   
+
         if (r.message) ModalConfirm.show(r.message);
         this.refresh();
     }
@@ -114,14 +115,14 @@ class DataPane extends HTMLElement {
 
     async submitJob() {
         const index = this.dom.datasetList.selectedIndex;
-        const optionElement = this.dom.datasetList.childNodes[index];        
+        const optionElement = this.dom.datasetList.childNodes[index];
         console.log("start button pressed");
         const r = await postAppJSON(
-            CONST.URLS.SUBMIT_JOB,{
-                filename: this.dom.datasetList.value,
-                source: optionElement.getAttribute("data-source"),
-                description: document.querySelector("#analysisName").value
-            }
+            CONST.URLS.SUBMIT_JOB, {
+            filename: this.dom.datasetList.value,
+            source: optionElement.getAttribute("data-source"),
+            description: document.querySelector("#analysisName").value
+        }
         );
         document.querySelector("job-pane").refresh();
     }
@@ -134,7 +135,7 @@ class DataPane extends HTMLElement {
     updateSelector(names) {
         this.dom.datasetList.replaceChildren();
 
-        for (const listname of ["default", "user"]){
+        for (const listname of ["default", "user"]) {
             for (const name of names[listname]) {
                 const element = document.createElement("option");
                 element.setAttribute("value", name);
