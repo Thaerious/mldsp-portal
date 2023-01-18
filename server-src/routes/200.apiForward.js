@@ -21,7 +21,6 @@ const serverList = fsjson.load(CONST.filenames.SERVER_LIST);
 for (const serverName in serverList) {
     for (const path of routesToForward) {        
         const url = `/${serverName}${path}`;
-        console.log(url);
         route.use(
             url,
             bodyParser.json(),
@@ -39,7 +38,6 @@ async function appendUserID(proxyReq, req) {
                     ...req.body,
                     userid: req.oidc.user.email
                 }
-                console.log(args);
                 const formData = new FormData();
 
                 Object.keys(args).map(key => formData.append(key, args[key]));

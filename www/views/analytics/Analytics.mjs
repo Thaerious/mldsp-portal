@@ -103,7 +103,6 @@ function addMatrix(key, value, labels, parent = "#conf-matrix-container") {
  * @param {string[]} columnLabels labels to use for columns.
  */
 function toTable(table, data, columnLabels) {
-    console.log(data);
     const head = table.querySelector("thead > tr");
     const body = table.querySelector("tbody");
 

@@ -81,8 +81,6 @@ class DataPane extends HTMLElement {
                 body: formData
             });
 
-            console.log(this);
-
             const r = await response.json();
             if (r.message) ModalConfirm.show(r.message);
             else this.refresh();
@@ -116,7 +114,7 @@ class DataPane extends HTMLElement {
     async submitJob() {
         const index = this.dom.datasetList.selectedIndex;
         const optionElement = this.dom.datasetList.childNodes[index];
-        console.log("start button pressed");
+
         const r = await postAppJSON(
             CONST.URLS.SUBMIT_JOB, {
             filename: this.dom.datasetList.value,
