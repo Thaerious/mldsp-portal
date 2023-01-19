@@ -5,12 +5,6 @@ dotenv.config();
 
 const config = {
     ...WWW_CONSTANTS,
-    status: {
-        ERROR: "error",
-        OK: "ok",
-        PENDING: "pending",
-        COMPLETE: "complete",
-    },
     api: {
         PRESET_DATASET_DIR: process.env.DATA_PRESET || "data/default",
         USERS_DIR: process.env.DATA_USER || "data/users",

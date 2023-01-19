@@ -3,7 +3,6 @@ import CONST from "../constants.js";
 import pkg from "express-openid-connect";
 import bodyParser from "body-parser";
 import Path from "path";
-import { API_CONST } from "mldsp-api";
 import handleError from "../handleError.js";
 import handleResponse from "../handleResponse.js";
 import FS from 'fs';
@@ -43,7 +42,7 @@ async function createJob(userid, description) {
     form.set('description', description);
 
     const apiServer = await jobs.nextServer();
-    const createURL = Path.join(apiServer.url, API_CONST.URLS.CREATE_JOB);    
+    const createURL = Path.join(apiServer.url, CONST.API.CREATE_JOB);    
 
     const response = await fetch(createURL, {
         method: 'POST',

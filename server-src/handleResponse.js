@@ -1,10 +1,10 @@
-import {API_CONST} from "mldsp-api";
+import CONST from "./constants.js";
 
 function handleResponse(res, route, obj = {}) {
     res.set('Content-Type', 'application/json');
 
     const msg = JSON.stringify({
-        status: API_CONST.STATUS.OK,
+        status: CONST.STATUS.OK,
         route: route,
         ...obj
     }, null, 2);
