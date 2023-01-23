@@ -5,7 +5,7 @@ const { auth } = pkg;
 
 const route = Express.Router();
 
-route.use(CONST.AUTH);
+route.use(auth(CONST.AUTH));
 
 // Middleware to make the `user` object available for all views
 route.use(function (req, res, next) {

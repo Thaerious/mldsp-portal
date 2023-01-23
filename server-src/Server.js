@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import Express from "express";
 import http from "http";
+import https from "https";
 import FS from "fs";
 import Path from "path";
 import CONST from "./constants.js";
@@ -30,7 +31,7 @@ class Server {
             try {
                 const key = FS.readFileSync(process.env.SSL_KEY);
                 const cert = FS.readFileSync(process.env.SSL_CERT);
-                this.https = https.createServer({ cert, key }, app);
+                this.https = https.createServer({ cert, key }, this.app);
                 this.https.listen(process.env.SSL_PORT, process.env.LIST_IP, () => {
                     logger.standard(`HTTPS Listening on port ${process.env.SSL_PORT}`);
                 });
