@@ -28,7 +28,7 @@ const config = {
         DEFAULT: process.env.DATA_DEFAULT || "./data/default",
         USER: process.env.DATA_USER || "./data/user"
     },
-    auth: {
+    AUTH: {
         authRequired: false,
         auth0Logout: true,
         secret: process.env.SECRET,

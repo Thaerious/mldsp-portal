@@ -9,8 +9,8 @@ import logger from "./setupLogger.js";
 dotenv.config();
 
 class Server {
-    async init (path = CONST.PATH.ROUTES) {
-        logger.verbose("Initialize Server");        
+    async init(path = CONST.PATH.ROUTES) {
+        logger.verbose("Initialize Server");
         this.app = Express();
 
         this.app.set(`views`, `www/views`);
@@ -20,39 +20,54 @@ class Server {
         return this;
     }
 
-    start (port = process.env.PORT, ip = `0.0.0.0`) {
-        this.server = http.createServer(this.app);
-        this.server.listen(port, ip, () => {
+    start(port = process.env.PORT, ip = `0.0.0.0`) {
+        this.http = http.createServer(this.app);
+        this.http.listen(port, ip, () => {
             logger.standard(`Listening on port ${port}`);
         });
 
-        process.on(`SIGINT`, () => this.stop(this.server));
-        process.on(`SIGTERM`, () => this.stop(this.server));
+        if (process.env.SSL_KEY && process.env.SSL_CERT) {
+            try {
+                const key = FS.readFileSync(process.env.SSL_KEY);
+                const cert = FS.readFileSync(process.env.SSL_CERT);
+                this.https = https.createServer({ cert, key }, app);
+                this.https.listen(process.env.SSL_PORT, process.env.LIST_IP, () => {
+                    logger.standard(`HTTPS Listening on port ${process.env.SSL_PORT}`);
+                });
+            } catch (err) {
+                console.log(err);
+                logger.standard(`HTTPS Server Not Started.`);
+            }
+        }
+
+        process.on(`SIGINT`, () => this.stop());
+        process.on(`SIGTERM`, () => this.stop());
         return this;
     }
 
-    stop () {
+    stop() {
         logger.standard(`Stopping server`);
-        this.server.close();
+        if (this.http) this.http.close();
+        if (this.https) this.https.close();
         process.exit();
     }
 
     async loadRoutes(path = CONST.PATH.ROUTES) {
-        logger.verbose(`routes path ${path} ${FS.existsSync(path)}`); 
+        logger.verbose(`routes path ${path} ${FS.existsSync(path)}`);
         if (!FS.existsSync(path)) return;
-        
+
         const contents = FS.readdirSync(path).sort();
 
         for (const entry of contents) {
             const fullpath = Path.join(process.cwd(), path, entry);
-            logger.verbose(`route ${fullpath}`); 
+            logger.verbose(`route ${fullpath}`);
             const { default: route } = await import(fullpath);
             try {
                 this.app.use(route);
             } catch (ex) {
                 throw `route ${fullpath} did not load`;
             }
-        }        
+        }
     }
 }
 
