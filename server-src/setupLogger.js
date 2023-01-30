@@ -1,6 +1,4 @@
 import Logger from "@thaerious/logger";
-import {mkdirif} from "@thaerious/utility";
-import FS from "fs";
 import Path from "path";
 import ParseArgs from "@thaerious/parseargs"
 

@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import WWW_CONSTANTS from "../www/views/shared/constants.js";
 
 const config = {
@@ -53,12 +56,6 @@ const config = {
             COMPLETE: "complete",
             RUNNING: "running"
         }  
-    },       
-    LOC: {
-        API: {
-            "proxy1": "http://127.0.0.1:9000",
-            "proxy2": "http://127.0.0.1:9001"
-        }
     }
 };
 

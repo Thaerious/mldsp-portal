@@ -14,8 +14,10 @@ route.use(CONST.URLS.LIST_DATASETS,
 );
 
 async function listDatasets(req) {
-    const path = mkdirif(CONST.DATA_DIR.USERS, req.oidc.user.email);    
-    return { 
+    const path = mkdirif(CONST.DATA.USER, req.oidc.user.email);
+    mkdirif(CONST.DATA.DEFAULT, "/");
+
+    return {
         user: getDataFiles(path),
         default: getDataFiles(CONST.DATA.DEFAULT)
     };
