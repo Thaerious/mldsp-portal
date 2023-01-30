@@ -28,7 +28,7 @@ function saveDataset(req) {
 }
 
 function datasetPath(userid, filename) {
-    return Path.join(CONST.DATA.USER, userid, filename);
+    return Path.join(CONST.DATA_DIR.USERS, userid, filename);
 }
 
 export {route as default, datasetPath}

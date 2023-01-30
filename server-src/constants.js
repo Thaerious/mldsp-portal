@@ -1,7 +1,4 @@
-import dotenv from "dotenv";
 import WWW_CONSTANTS from "../www/views/shared/constants.js";
-
-dotenv.config();
 
 const config = {
     ...WWW_CONSTANTS,

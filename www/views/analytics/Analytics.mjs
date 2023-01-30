@@ -1,8 +1,8 @@
 "use strict";
 import postAppJSON from "../dashboard/postAppJSON.mjs";
-import { API_CONST } from "mldsp-api";
 import cloneTemplate from "./cloneTemplate.mjs";
 import cMatrix from "./cMatrix.mjs";
+import CONST from "../shared/constants.js";
 
 let selectedCMatrix = "";
 
@@ -10,7 +10,7 @@ window.addEventListener("load", async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const server = urlParams.get("server");
     const jobid = urlParams.get("jobid");
-    const url = `${server}${API_CONST.URLS.RETRIEVE_RESULTS}`;
+    const url = `${server}${CONST.API.RETRIEVE_RESULTS}`;
 
     const post = await postAppJSON(url, { jobid: jobid });
     loadView(post.results);

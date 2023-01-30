@@ -16,7 +16,7 @@ route.use(CONST.API.LIST_JOBS,
 async function listJobs(req) {
     let rvalue = { records: [] };
 
-    for (const serverName in serverList) {        
+    for (const serverName in serverList) {     
         const form = new FormData();
         form.set("userid", req.oidc.user.email);
 
