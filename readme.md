@@ -16,10 +16,30 @@ the verstion (18.13.0) with the desired version.
     npm i
 
 ## Step 2: Add API Servers to api_servers.json
+The API servers are stored in a JSON file with key-value pairs representing the 
+server name and server address.
 
     vim api_servers.json
 
 ## Step 3: Install SSL Certs
+Install self signed certificates for development.
+Install Let's Encrypt certificates for production.
+Enter the Auth0 values into the .env file from the Auth0 dashboard.
+
+### Self Signed
+
+    mkdir .cert
+    openssl req -nodes -new -x509 -keyout .cert/server.key -out .cert/server.cert
+
+Add to .env file
+
+    SSL_CERT=ssl/server.cert
+    SSL_KEY=ssl/server.key
+    CLIENT_ID= from auth0
+    ISSUER_BASE_URL= from auth0
+    SECRET= from auth 0    
+
+### Let's Encrypt
 
     sudo certbot certonly
 
@@ -31,6 +51,14 @@ Add to .env file
     ISSUER_BASE_URL= from auth0
     SECRET= from auth 0
 
-## Step 3: Start the Portal Server    
-    npm run server
+## Step 3: Setup the Data Sets
+Zip and copy the data sets from the hilllab/mldsp data directory to the portal 
+/data/default directory.
+
+    zip -r data/default/fungi ../mldsp/data/Fungi/*
+
+## Step 4: Start the Portal Server    
+If you run the server on port 80 node must be run as sudo.
+
+    sudo npm run server
 
