@@ -1,4 +1,3 @@
-import dotenv from "dotenv";
 import Express from "express";
 import http from "http";
 import https from "https";
@@ -6,8 +5,6 @@ import FS from "fs";
 import Path from "path";
 import CONST from "./constants.js";
 import logger from "./setupLogger.js";
-
-dotenv.config();
 
 class Server {
     async init(path = CONST.PATH.ROUTES) {

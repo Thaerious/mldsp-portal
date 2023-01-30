@@ -34,3 +34,24 @@ Add to .env file
 ## Step 3: Start the Portal Server    
     npm run server
 
+## Step 4: Add system.d info
+Permits systemctl start, stop, and enable.  Use enable to autostart the service
+on boot.
+
+    sudo systemctl start mldsp-portal
+    sudo systemctl stop mldsp-portal
+    sudo systemctl enable mldsp-portal
+
+To enable system control add the following to /etc/systemd/system/mldsp-portal.service
+
+    [Unit]
+    Description=MLDSP Portal Server
+
+    [Service]
+    User=ubuntu
+    WorkingDirectory=/home/ubuntu/MLDSP-portal
+    ExecStart=node server-src/main.js
+    Restart=always
+
+    [Install]
+    WantedBy=multi-user.target

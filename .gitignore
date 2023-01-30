@@ -1,0 +1,11 @@
+*.code-workspace
+www/compiled
+**/.*
+node_modules/
+**/venv/
+venv
+data/
+mldsp/
+cert*.*/
+log/
+!.gitignore

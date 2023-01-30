@@ -9,7 +9,7 @@ import { fsjson } from "@thaerious/utility";
 
 const route = express.Router();
 
-const routesToForward = [   
+const routesToForward = [
     CONST.API.GET_JOB_RECORD,
     CONST.API.DELETE_JOB,
     CONST.API.SET_VALUE,
@@ -19,7 +19,7 @@ const routesToForward = [
 const serverList = fsjson.load(CONST.filenames.SERVER_LIST);
 
 for (const serverName in serverList) {
-    for (const path of routesToForward) {        
+    for (const path of routesToForward) {
         const url = `/${serverName}${path}`;
         route.use(
             url,
@@ -28,41 +28,41 @@ for (const serverName in serverList) {
                 target: serverList[serverName] + path,
                 changeOrigin: true,
                 onProxyReq: appendUserID
-            })            
+            })
         );
     }
 }
 
 async function appendUserID(proxyReq, req) {
-                const args = {
-                    ...req.body,
-                    userid: req.oidc.user.email
-                }
-                const formData = new FormData();
+    const args = {
+        ...req.body,
+        userid: req.oidc.user.email
+    }
+    const formData = new FormData();
 
-                Object.keys(args).map(key => formData.append(key, args[key]));
+    Object.keys(args).map(key => formData.append(key, args[key]));
 
-                if (req.body.filename) {
-                    const filepath = getFilePath(req.body.filename + ".zip", req.oidc.user.email);
-                    formData.append('fileupload', FS.readFileSync(filepath), req.body.filename + ".zip");
-                }
+    if (req.body.filename) {
+        const filepath = getFilePath(req.body.filename + ".zip", req.oidc.user.email);
+        formData.append('fileupload', FS.readFileSync(filepath), req.body.filename + ".zip");
+    }
 
-                proxyReq.setHeader('content-type', `multipart/form-data; boundary=${formData.getBoundary()}`);
-                proxyReq.setHeader('content-length', formData.getBuffer().length);
+    proxyReq.setHeader('content-type', `multipart/form-data; boundary=${formData.getBoundary()}`);
+    proxyReq.setHeader('content-length', formData.getBuffer().length);
 
-                const body = formData.getBuffer().toString("utf-8");
+    const body = formData.getBuffer().toString("utf-8");
 
-                await proxyReq.write(body);
-                proxyReq.end();
-            }
+    await proxyReq.write(body);
+    proxyReq.end();
+}
 
 function getFilePath(filename, username) {
-                const defpath = Path.join(CONST.DATA.DEFAULT, filename);
-                const userpath = Path.join(CONST.DATA.USER, username, filename);
+    const defpath = Path.join(CONST.DATA.DEFAULT, filename);
+    const userpath = Path.join(CONST.DATA_DIR.USERS, username, filename);
 
-                if (FS.existsSync(userpath)) return userpath;
-                return defpath;
-            }
+    if (FS.existsSync(userpath)) return userpath;
+    return defpath;
+}
 
 
 export default route;

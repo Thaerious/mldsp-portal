@@ -1,5 +1,4 @@
 import CONST from "/shared/constants.js";
-import {API_CONST} from "mldsp-api";
 import { convertToCamel } from "../../scripts/namingConventions.mjs";
 import postAppJSON from "../../postAppJSON.mjs";
 
@@ -64,10 +63,10 @@ class JobPane extends HTMLElement {
 
         this.dom.deleteButton.removeAttribute("disabled");
 
-        if (this.selectedRecord().status === API_CONST.STATUS.PENDING) {
+        if (this.selectedRecord().status === CONST.STATUS.PENDING) {
             this.dom.viewButton.setAttribute("disabled", true);
         }
-        else if (this.selectedRecord().status === API_CONST.STATUS.COMPLETE) {
+        else if (this.selectedRecord().status === CONST.STATUS.COMPLETE) {
             this.dom.viewButton.removeAttribute("disabled");
         }
     }
@@ -107,9 +106,13 @@ class JobPane extends HTMLElement {
         this.jobs = {};
 
         // fill selector
-        const jobs = await getJobs();
-        for (const job of jobs.records) {
-            this.addJobItem(job);
+        try {
+            const jobs = await getJobs();
+            for (const job of jobs.records) {
+                this.addJobItem(job);
+            }            
+        } catch (response) {
+            console.log(response);
         }
     }
 
@@ -146,6 +149,7 @@ async function getJobs() {
     });
 
     const r = await response.json();
+    if (r.status == "error") throw r;
     return r;
 }
 
