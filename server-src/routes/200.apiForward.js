@@ -58,7 +58,7 @@ async function appendUserID(proxyReq, req) {
 
 function getFilePath(filename, username) {
     const defpath = Path.join(CONST.DATA.DEFAULT, filename);
-    const userpath = Path.join(CONST.DATA_DIR.USERS, username, filename);
+    const userpath = Path.join(CONST.DATA.USER, username, filename);
 
     if (FS.existsSync(userpath)) return userpath;
     return defpath;

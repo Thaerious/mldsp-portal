@@ -104,6 +104,8 @@ class DataPane extends HTMLElement {
             method: "POST",
         });
         const r = await response.json();
+        if (r.message) ModalConfirm.show(r.message);
+
         const datasetNames = {
             default: r.default,
             user: r.user

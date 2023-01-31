@@ -1,5 +1,5 @@
 import CONST from "/shared/constants.js";
-import ModalConfirm from "./ModalConfirm.mjs";
+import ModalConfirm from "../scripts/ModalConfirm.mjs";
 
 function showUploadDialog(selector = "#upload-form") {
     const form = document.querySelector(selector);
@@ -19,15 +19,8 @@ function showUploadDialog(selector = "#upload-form") {
             body: formData
         });
 
-        const json = await response.json();
-        switch (json.state) {
-            case "success":
-                ModalConfirm.show(json.message);
-                break;
-            case "error":
-                ModalConfirm.show(json.message);
-                break;
-        }
+        const r = await response.json();
+        if (r.message) ModalConfirm.show(r.message);        
     }
 }
 

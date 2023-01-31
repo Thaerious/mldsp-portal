@@ -57,6 +57,11 @@ Zip and copy the data sets from the hilllab/mldsp data directory to the portal
 
     zip -r data/default/fungi ../mldsp/data/Fungi/*
 
+## Step 4: Link packages to public directory
+
+    sudo ln -s ../../node_modules/bootstrap/ bootstrap
+    sudo ln -s ../../node_modules/plotly.js-dist/ plotly
+
 ## Step 4: Start the Portal Server    
 If you run the server on port 80 node must be run as sudo.
 

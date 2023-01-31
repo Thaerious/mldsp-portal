@@ -10,8 +10,9 @@ function handleResponse(res, route, obj = {}) {
         ...obj
     }, null, 2);
 
-    logger.veryverbose(`${route}: ${msg}`);
+    logger.veryverbose(msg);
     res.write(msg);
+    res.end();
 }
 
 export default handleResponse;

@@ -1,4 +1,5 @@
 import CONST from "/shared/constants.js";
+import ModalConfirm from "../scripts/ModalConfirm.mjs";
 
 function getNumericalRepresentations() {
     return [
@@ -22,7 +23,7 @@ function getNumericalRepresentations() {
 }
 
 async function getResults(jobid){
-    const response = await fetch(CONST.URLS.GET_RESULTS, {
+    const r = await fetch(CONST.URLS.GET_RESULTS, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -32,7 +33,8 @@ async function getResults(jobid){
         }),        
     });
 
-    return await response.json();
+    if (r.message) ModalConfirm.show(r.message);
+    return await r.json();
 }
 
 function getCGRKValue() {
@@ -67,6 +69,7 @@ async function submitCalculation(name, dataset, settings) {
     });
 
     const r = await response.json();
+    if (r.message) ModalConfirm.show(r.message);
     return r;
 }
 
@@ -82,6 +85,7 @@ async function removeResult(jobid){
     });
 
     const r = await response.json();
+    if (r.message) ModalConfirm.show(r.message);
     return r;    
 }
 

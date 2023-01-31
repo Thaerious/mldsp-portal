@@ -3,6 +3,7 @@ import CONST from "../constants.js";
 import pkg from "express-openid-connect";
 import { routeFactory } from "../makeRoute.js";
 import { fsjson } from "@thaerious/utility";
+import postapi from "../postapi.js";
 
 const { requiresAuth } = pkg;
 const route = express.Router();
@@ -17,22 +18,12 @@ async function listJobs(req) {
     let rvalue = { records: [] };
 
     for (const serverName in serverList) {     
-        const form = new FormData();
-        form.set("userid", req.oidc.user.email);
-
         const url = `${serverList[serverName]}${CONST.API.LIST_JOBS}`;
+        const response = await postapi(url, { "userid": req.oidc.user.email });
 
-        const response = await fetch(
-            url, {
-                method: 'POST',
-                body: form
-            }
-        );
-        
-        const records = (await response.json()).records;
-        for (const jobid in records) {
-            records[jobid].server = serverName;
-            rvalue.records.push(records[jobid]);
+        for (const jobid in response.records) {
+            response.records[jobid].server = serverName;
+            rvalue.records.push(response.records[jobid]);
         }
     }
 

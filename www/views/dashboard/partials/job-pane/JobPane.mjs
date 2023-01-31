@@ -1,6 +1,7 @@
 import CONST from "/shared/constants.js";
 import { convertToCamel } from "../../scripts/namingConventions.mjs";
 import postAppJSON from "../../postAppJSON.mjs";
+import ModalConfirm from "../../scripts/ModalConfirm.mjs";
 
 class JobPane extends HTMLElement {
 
@@ -149,6 +150,7 @@ async function getJobs() {
     });
 
     const r = await response.json();
+    if (r.message) ModalConfirm.show(r.message);
     if (r.status == "error") throw r;
     return r;
 }

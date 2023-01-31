@@ -5,7 +5,6 @@ import Path from "path";
  * Get the names (not extension) of all available .zip input files.
  */
 function getDataFiles(dir) {
-    console.log("get data files " + dir);
     const datasets = [];
     if (FS.existsSync(dir)) {
         for (const entry of FS.readdirSync(dir, { withFileTypes: true })){            

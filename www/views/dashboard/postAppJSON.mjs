@@ -1,3 +1,5 @@
+import ModalConfirm from "/dashboard/scripts/ModalConfirm.mjs";
+
 async function postAppJSON(url, data = {}) {
     const response = await fetch(url, {
         method: "POST",
@@ -6,7 +8,12 @@ async function postAppJSON(url, data = {}) {
         },
         body: JSON.stringify(data)
     });
-    return response.json();
+
+    console.log("HERE");
+    const r = await response.json();
+    console.log(r);
+    if (r.message) ModalConfirm.show(r.message);
+    return r;
 }
 
 export default postAppJSON;

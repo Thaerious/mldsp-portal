@@ -8,6 +8,7 @@ import handleResponse from "../handleResponse.js";
 import FS from 'fs';
 import Jobs from "../Jobs.js";
 import logger from "../setupLogger.js";
+import postapi from "../postapi.js";
 
 // Submit a new MLDSP job to the api server.
 // First creates a local job record.
@@ -36,23 +37,16 @@ async function submit(req, res, next) {
 }
 
 async function createJob(userid, description) {
-    const form = new FormData();
-    form.set('userid', userid);
-    form.set('description', description);
-
     const apiServer = await jobs.nextServer();
-    const createURL = Path.join(apiServer.url, CONST.API.CREATE_JOB);    
+    const createURL = Path.join(apiServer.url, CONST.API.CREATE_JOB);       
     
-    logger.veryverbose(`fetching ${createURL}`);
-    const response = await fetch(createURL, {
-        method: 'POST',
-        body: form
+    const json = await postapi(createURL, {
+        'userid': userid,
+        'description': description
     });
     
-    const json = await response.json();
-    const record = json.record;
-    record.server = apiServer;
-    return record;
+    json.record.server = apiServer;
+    return json.record;
 }
 
 async function upload(record, filename) {
@@ -63,35 +57,22 @@ async function upload(record, filename) {
         type: "application/zip",
     });
 
-    const form = new FormData();
-    form.set("userid", record.userid);
-    form.set("jobid", record.jobid);
-    form.set("fileupload", blob, filename);
-
-    logger.veryverbose(`fetching ${uploadURL}`);
-    const response = await fetch(uploadURL, {
-        method: 'POST',
-        body: form
+    return await postapi(uploadURL, {
+        'userid': userid,
+        'jobid': record.jobid,
+        'fileupload': { 'blob': blob, "filename": filename }
     });
-    
-    return await response.json();
 }
 
 async function startJob(record) {
     const startURL = Path.join(record.server.url, CONST.API.START_JOB);
 
-    const form = new FormData();
-    form.set('userid', record.userid);
-    form.set('jobid', record.jobid);
-
-    logger.veryverbose(`fetching ${startURL}`);
-    const response = await fetch(startURL, {
-        method: 'POST',
-        body: form
+    const json = await postapi(startURL, {
+        'userid': userid,
+        'jobid': record.jobid        
     });
 
-    const data = await response.json();
-    return data.jobid;    
+    return json.jobid;    
 }
 
 export default route;
