@@ -7,15 +7,14 @@ import handleError from "../handleError.js";
 import handleResponse from "../handleResponse.js";
 import FS from 'fs';
 import Jobs from "../Jobs.js";
-import logger from "../setupLogger.js";
 import postapi from "../postapi.js";
+import crypto from "crypto";
 
 // Submit a new MLDSP job to the api server.
 // First creates a local job record.
 
 const { requiresAuth } = pkg;
 const route = express.Router();
-
 const jobs = new Jobs().load();
 
 route.use(CONST.URLS.SUBMIT_JOB,
@@ -26,7 +25,16 @@ route.use(CONST.URLS.SUBMIT_JOB,
 
 async function submit(req, res, next) {
     try {
-        const zipPath = Path.join(CONST.DATA[req.body.source.toUpperCase()], req.body.filename + '.zip');
+        let zipPath = "";
+        switch (req.body.source.toUpperCase()) {
+            case "USER":
+                zipPath = Path.join(CONST.DATA.USER, req.oidc.user.email, req.body.filename + '.zip');
+                break;
+            case "DEFAULT":
+                zipPath = Path.join(CONST.DATA.DEFAULT, req.body.filename + '.zip');
+                break;
+        }
+
         const record = await createJob(req.oidc.user.email, req.body.description);
         await upload(record, zipPath);
         await startJob(record);
@@ -58,7 +66,7 @@ async function upload(record, filename) {
     });
 
     return await postapi(uploadURL, {
-        'userid': userid,
+        'userid': record.userid,
         'jobid': record.jobid,
         'fileupload': { 'blob': blob, "filename": filename }
     });
@@ -68,7 +76,7 @@ async function startJob(record) {
     const startURL = Path.join(record.server.url, CONST.API.START_JOB);
 
     const json = await postapi(startURL, {
-        'userid': userid,
+        'userid': record.userid,
         'jobid': record.jobid        
     });
 
