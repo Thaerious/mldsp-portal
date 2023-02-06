@@ -122,9 +122,10 @@ class DataPane extends HTMLElement {
             filename: this.dom.datasetList.value,
             source: optionElement.getAttribute("data-source"),
             description: document.querySelector("#analysisName").value
-        }
-        );
-        document.querySelector("job-pane").refresh();
+        });
+        
+        await document.querySelector("job-pane").refresh();
+        await document.querySelector("job-pane").select(r.server.name, r.jobid);
     }
 
     /**

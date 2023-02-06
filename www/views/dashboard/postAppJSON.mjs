@@ -9,9 +9,7 @@ async function postAppJSON(url, data = {}) {
         body: JSON.stringify(data)
     });
 
-    console.log("HERE");
     const r = await response.json();
-    console.log(r);
     if (r.message) ModalConfirm.show(r.message);
     return r;
 }

@@ -23,16 +23,40 @@ class JobPane extends HTMLElement {
 
     async refresh() {
         await this.loadJobs();
+        await this.updateSelectedRecord();
+    }
+
+    async select(servername, jobid) {
+        const uid = servername + "-" + jobid;
+        const element = this.querySelector(`[data-jobid='${uid}']`);
+        const index = Array.from(element.parentNode.children).indexOf(element);
+        this.dom.jobsList.selectedIndex = index;
+        await this.updateSelectedRecord();
+    }
+
+    // Update the currently selected record,
+    // If the record status is pending or running, wait 5 seconds and update again.
+    async updateSelectedRecord() {   
+        if (this.recordTimeout) clearTimeout(this.recordTimeout);
+
+        const record = await this.refreshSelectedRecord();
         this.updateButtons();
-        this.updateFields()        
+        this.updateFields();        
+        if (!record) return;
+
+        const status = record.status;
+        if (status == CONST.STATUS.RUNNING || status == CONST.STATUS.PENDING) {           
+            this.recordTimeout = setTimeout(() => {
+                this.updateSelectedRecord();
+            }, CONST.REFRESH_INCREMENT);
+        }
     }
 
     async ready() {
         await this.refresh();
 
-        this.dom.jobsList.addEventListener("change", event => {
-            this.updateButtons();
-            this.updateFields();
+        this.dom.jobsList.addEventListener("change", async event => {
+            await this.updateSelectedRecord();
         });
         
         this.dom.viewButton.addEventListener("click", event => {
@@ -55,7 +79,7 @@ class JobPane extends HTMLElement {
      * Update the enabled/disabled status of the buttons, based on the job
      * status field.
      */
-    updateButtons() {
+    updateButtons(record) {
         if (!this.selectedRecord()) {
             this.dom.viewButton.setAttribute("disabled", true);
             this.dom.deleteButton.setAttribute("disabled", true);
@@ -111,7 +135,7 @@ class JobPane extends HTMLElement {
             const jobs = await getJobs();
             for (const job of jobs.records) {
                 this.addJobItem(job);
-            }            
+            }
         } catch (response) {
             console.log(response);
         }
@@ -119,11 +143,15 @@ class JobPane extends HTMLElement {
 
     addJobItem(record) {
         const uid = record.server + "-" + record.jobid;
-        const element = document.createElement("option");
-        element.setAttribute("value", record.desc);
-        element.setAttribute("data-jobid", uid);
-        element.innerHTML = `${record.desc} (${uid})`;
-        this.dom.jobsList.append(element);
+
+        if (!this.jobs[uid]) {
+            const element = document.createElement("option");
+            element.setAttribute("value", record.desc);
+            element.setAttribute("data-jobid", uid);
+            element.innerHTML = `${record.desc} (${uid})`;
+            this.dom.jobsList.append(element);
+        }
+
         this.jobs[uid] = record;
     }
 
@@ -139,6 +167,23 @@ class JobPane extends HTMLElement {
         if (r.message) ModalConfirm.show(r.message);
         await this.refresh();
     }
+
+    async refreshSelectedRecord() {
+        const record = this.selectedRecord();
+        if (!record) return;
+
+        const r = await postAppJSON(
+            record.server + CONST.API.GET_JOB_RECORD,
+            { "jobid": record.jobid }
+        );
+    
+        if (r.message) ModalConfirm.show(r.message);
+        if (r.status == "error") throw r;
+        r.record.server = record.server;
+
+        this.addJobItem(r.record)
+        return r.record;   
+    }    
 }
 
 async function getJobs() {
@@ -154,6 +199,8 @@ async function getJobs() {
     if (r.status == "error") throw r;
     return r;
 }
+
+
 
 window.customElements.define('job-pane', JobPane);
 export default JobPane;

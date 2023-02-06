@@ -38,7 +38,7 @@ async function submit(req, res, next) {
         const record = await createJob(req.oidc.user.email, req.body.description);
         await upload(record, zipPath);
         await startJob(record);
-        handleResponse(res, CONST.URLS.SUBMIT_JOB, { jobid: record.jobid });
+        handleResponse(res, CONST.URLS.SUBMIT_JOB, record);
     } catch (error) {
         handleError(error, CONST.URLS.SUBMIT_JOB, req, res);
     }
@@ -56,24 +56,6 @@ async function createJob(userid, description) {
     json.record.server = apiServer;
     return json.record;
 }
-
-// async function upload(record, filename) {
-//     const uploadURL = Path.join(record.server.url, CONST.API.UPLOAD_DATA);
-//     const stream = FS.readFileSync(filename);
-//     const blob = new Blob([stream], {
-//         type: "application/zip",
-//     });
-
-//     const form = new FormData();
-//     form.set("userid", record.userid);
-//     form.set("jobid", record.jobid);
-//     form.set("fileupload", blob, filename);
-
-//     fetch(uploadURL, {
-//         method: 'POST',
-//         body: form
-//     });
-// }
 
 async function upload(record, filename) {
     const uploadURL = Path.join(record.server.url, CONST.API.UPLOAD_DATA);
