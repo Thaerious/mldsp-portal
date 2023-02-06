@@ -18,19 +18,19 @@ class Server {
         return this;
     }
 
-    start(port = process.env.PORT, ip = `0.0.0.0`) {
+    start(port = CONST.PORT, ip = `0.0.0.0`) {
         this.http = http.createServer(this.app);
         this.http.listen(port, ip, () => {
             logger.standard(`Listening on port ${port}`);
         });
 
-        if (process.env.SSL_KEY && process.env.SSL_CERT) {
+        if (CONST.SSL_KEY && CONST.SSL_CERT) {
             try {
-                const key = FS.readFileSync(process.env.SSL_KEY);
-                const cert = FS.readFileSync(process.env.SSL_CERT);
+                const key = FS.readFileSync(CONST.SSL_KEY);
+                const cert = FS.readFileSync(CONST.SSL_CERT);
                 this.https = https.createServer({ cert, key }, this.app);
-                this.https.listen(process.env.SSL_PORT, process.env.LIST_IP, () => {
-                    logger.standard(`HTTPS Listening on port ${process.env.SSL_PORT}`);
+                this.https.listen(CONST.SSL_PORT, CONST.LIST_IP, () => {
+                    logger.standard(`HTTPS Listening on port ${CONST.SSL_PORT}`);
                 });
             } catch (err) {
                 console.log(err);

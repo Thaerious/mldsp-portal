@@ -35,9 +35,9 @@ Add to .env file
 
     SSL_CERT=ssl/server.cert
     SSL_KEY=ssl/server.key
-    CLIENT_ID= from auth0
-    ISSUER_BASE_URL= from auth0
-    SECRET= from auth 0    
+    CLIENT_ID=from auth0
+    ISSUER_BASE_URL=from auth0
+    SECRET=from auth0    
 
 ### Let's Encrypt
 

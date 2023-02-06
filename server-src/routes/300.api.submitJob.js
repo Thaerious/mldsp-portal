@@ -57,6 +57,24 @@ async function createJob(userid, description) {
     return json.record;
 }
 
+// async function upload(record, filename) {
+//     const uploadURL = Path.join(record.server.url, CONST.API.UPLOAD_DATA);
+//     const stream = FS.readFileSync(filename);
+//     const blob = new Blob([stream], {
+//         type: "application/zip",
+//     });
+
+//     const form = new FormData();
+//     form.set("userid", record.userid);
+//     form.set("jobid", record.jobid);
+//     form.set("fileupload", blob, filename);
+
+//     fetch(uploadURL, {
+//         method: 'POST',
+//         body: form
+//     });
+// }
+
 async function upload(record, filename) {
     const uploadURL = Path.join(record.server.url, CONST.API.UPLOAD_DATA);
     const stream = FS.readFileSync(filename);

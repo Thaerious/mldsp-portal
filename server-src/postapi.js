@@ -9,7 +9,7 @@ async function postapi(url, data) {
             formData.set(field, data[field]);
         }
     }
-    
+
     logger.verbose(`fetching ${url}`);
     const response = await fetch(url, {
         method: 'POST',
