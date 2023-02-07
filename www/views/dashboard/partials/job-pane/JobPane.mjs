@@ -34,24 +34,6 @@ class JobPane extends HTMLElement {
         await this.updateSelectedRecord();
     }
 
-    // Update the currently selected record,
-    // If the record status is pending or running, wait 5 seconds and update again.
-    async updateSelectedRecord() {   
-        if (this.recordTimeout) clearTimeout(this.recordTimeout);
-
-        const record = await this.refreshSelectedRecord();
-        this.updateButtons();
-        this.updateFields();        
-        if (!record) return;
-
-        const status = record.status;
-        if (status == CONST.STATUS.RUNNING || status == CONST.STATUS.PENDING) {           
-            this.recordTimeout = setTimeout(() => {
-                this.updateSelectedRecord();
-            }, CONST.REFRESH_INCREMENT);
-        }
-    }
-
     async ready() {
         await this.refresh();
 
@@ -66,6 +48,25 @@ class JobPane extends HTMLElement {
         this.dom.deleteButton.addEventListener("click", event => {
             this.deleteSelectedJob();
         });
+    }
+
+    // Update the currently selected record,
+    // If the record status is pending or running, wait 5 seconds and update again.
+    async updateSelectedRecord() {   
+        if (this.recordTimeout) clearTimeout(this.recordTimeout);
+
+        const record = await this.refreshSelectedRecord();
+        this.updateButtons();
+        this.updateFields();        
+        if (!record) return;
+
+        const status = record.status;
+        if (CONST.REFRESH_INCREMENT <= 0) return;
+        if (status == CONST.STATUS.RUNNING || status == CONST.STATUS.PENDING) {           
+            this.recordTimeout = setTimeout(() => {
+                this.updateSelectedRecord();
+            }, CONST.REFRESH_INCREMENT);
+        }
     }
 
     showSelectedAnalytics() {
@@ -87,11 +88,9 @@ class JobPane extends HTMLElement {
         }
 
         this.dom.deleteButton.removeAttribute("disabled");
+        this.dom.viewButton.setAttribute("disabled", true);
 
-        if (this.selectedRecord().status === CONST.STATUS.PENDING) {
-            this.dom.viewButton.setAttribute("disabled", true);
-        }
-        else if (this.selectedRecord().status === CONST.STATUS.COMPLETE) {
+        if (this.selectedRecord().status === CONST.STATUS.COMPLETE) {
             this.dom.viewButton.removeAttribute("disabled");
         }
     }

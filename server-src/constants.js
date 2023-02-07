@@ -10,7 +10,6 @@ const CONST = {
     LIST_IP: `${process.env.LIST_IP || '0.0.0.0'}`,
     SSL_KEY: `${process.env.SSL_KEY || '.cert/server.key'}`,
     SSL_CERT: `${process.env.SSL_CERT || '.cert/server.cert'}`,
-    REFRESH_INCREMENT: `${process.env.REFRESH_INCREMENT || 5000}`,
     api: {
         PRESET_DATASET_DIR: process.env.DATA_PRESET || "data/default",
         USERS_DIR: process.env.DATA_USER || "data/users",

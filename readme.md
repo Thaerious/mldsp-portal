@@ -31,13 +31,10 @@ Enter the Auth0 values into the .env file from the Auth0 dashboard.
     mkdir .cert
     openssl req -nodes -new -x509 -keyout .cert/server.key -out .cert/server.cert
 
-Add to .env file
+Set locaion of ssl files in .env (optional, default values shown).
 
     SSL_CERT=ssl/server.cert
     SSL_KEY=ssl/server.key
-    CLIENT_ID=from auth0
-    ISSUER_BASE_URL=from auth0
-    SECRET=from auth0    
 
 ### Let's Encrypt
 
@@ -47,9 +44,13 @@ Add to .env file
 
     SSL_CERT=/etc/letsencrypt/live/DOMAIN_NAME/fullchain.pem
     SSL_KEY=/etc/letsencrypt/live/DOMAIN_NAME/privkey.pem
-    CLIENT_ID= from auth0
-    ISSUER_BASE_URL= from auth0
-    SECRET= from auth 0
+
+### Add AUTH0 Values to .env
+
+    CLIENT_ID=from auth0
+    ISSUER_BASE_URL=from auth0
+    SECRET=from auth0    
+    SERVER_URL=https://yourserver.ca
 
 ## Step 3: Setup the Data Sets
 Zip and copy the data sets from the hilllab/mldsp data directory to the portal 
@@ -67,7 +68,7 @@ If you run the server on port 80 node must be run as sudo.
 
     sudo npm run server
 
-## Step 4: Add system.d info
+## Step 5 (optional): Add system.d info
 Permits systemctl start, stop, and enable.  Use enable to autostart the service
 on boot.
 

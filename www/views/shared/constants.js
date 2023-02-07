@@ -1,4 +1,5 @@
 export default {
+    REFRESH_INCREMENT: `5000`,
     API: {
         CREATE_JOB: "/create_job",
         GET_JOB_RECORD: "/get_job_record",
