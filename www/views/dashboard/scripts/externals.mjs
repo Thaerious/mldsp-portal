@@ -22,7 +22,7 @@ function getNumericalRepresentations() {
     ];
 }
 
-async function getResults(jobid){
+async function getResults(jobid) {
     const r = await fetch(CONST.URLS.GET_RESULTS, {
         method: "POST",
         headers: {
@@ -30,10 +30,10 @@ async function getResults(jobid){
         },
         body: JSON.stringify({
             jobid: jobid,
-        }),        
+        }),
     });
 
-    if (r.message) ModalConfirm.show(r.message);
+    if (r.message || r.status === CONST.STATUS.ERROR) ModalConfirm.show(r.message);
     return await r.json();
 }
 
@@ -69,11 +69,11 @@ async function submitCalculation(name, dataset, settings) {
     });
 
     const r = await response.json();
-    if (r.message) ModalConfirm.show(r.message);
+    if (r.message || r.status === CONST.STATUS.ERROR) ModalConfirm.show(r.message);
     return r;
 }
 
-async function removeResult(jobid){
+async function removeResult(jobid) {
     const response = await fetch(CONST.URLS.DELETE_JOB, {
         method: "POST",
         headers: {
@@ -85,8 +85,8 @@ async function removeResult(jobid){
     });
 
     const r = await response.json();
-    if (r.message) ModalConfirm.show(r.message);
-    return r;    
+    if (r.message || r.status === CONST.STATUS.ERROR) ModalConfirm.show(r.message);
+    return r;
 }
 
 export { removeResult, getResults, getNumericalRepresentations, getCGRKValue, submitCalculation };

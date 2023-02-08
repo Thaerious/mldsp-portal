@@ -82,7 +82,7 @@ class DataPane extends HTMLElement {
             });
 
             const r = await response.json();
-            if (r.message) ModalConfirm.show(r.message);
+            if (r.message || r.status === CONST.STATUS.ERROR) ModalConfirm.show(r.message);
             else this.refresh();
         }, { once: true });
 
@@ -95,7 +95,7 @@ class DataPane extends HTMLElement {
             { filename: this.dom.datasetList.value }
         );
 
-        if (r.message) ModalConfirm.show(r.message);
+        if (r.message || r.status === CONST.STATUS.ERROR) ModalConfirm.show(r.message);
         this.refresh();
     }
 
@@ -104,7 +104,7 @@ class DataPane extends HTMLElement {
             method: "POST",
         });
         const r = await response.json();
-        if (r.message) ModalConfirm.show(r.message);
+        if (r.message || r.status === CONST.STATUS.ERROR) ModalConfirm.show(r.message);
 
         const datasetNames = {
             default: r.default,
@@ -123,9 +123,9 @@ class DataPane extends HTMLElement {
             source: optionElement.getAttribute("data-source"),
             description: document.querySelector("#analysisName").value
         });
-        
+        console.log(r);
         await document.querySelector("job-pane").refresh();
-        await document.querySelector("job-pane").select(r.server.name, r.jobid);
+        await document.querySelector("job-pane").select(r.record.server.name, r.record.jobid);
     }
 
     /**

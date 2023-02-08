@@ -163,7 +163,7 @@ class JobPane extends HTMLElement {
             { "jobid": record.jobid }
         );
    
-        if (r.message) ModalConfirm.show(r.message);
+        if (r.message || r.status === CONST.STATUS.ERROR) ModalConfirm.show(r.message);
         await this.refresh();
     }
 
@@ -176,7 +176,7 @@ class JobPane extends HTMLElement {
             { "jobid": record.jobid }
         );
     
-        if (r.message) ModalConfirm.show(r.message);
+        if (r.message || r.status === CONST.STATUS.ERROR) ModalConfirm.show(r.message);
         if (r.status == "error") throw r;
         r.record.server = record.server;
 
@@ -194,7 +194,7 @@ async function getJobs() {
     });
 
     const r = await response.json();
-    if (r.message) ModalConfirm.show(r.message);
+    if (r.message || r.status === CONST.STATUS.ERROR) ModalConfirm.show(r.message);
     if (r.status == "error") throw r;
     return r;
 }

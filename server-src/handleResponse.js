@@ -1,12 +1,12 @@
 import CONST from "./constants.js";
 import logger from "./setupLogger.js";
 
-function handleResponse(res, route, obj = {}) {
+function handleResponse(res, url, obj = {}) {
     res.set('Content-Type', 'application/json');
 
     const msg = JSON.stringify({
         status: CONST.STATUS.OK,
-        route: route,
+        url: url,
         ...obj
     }, null, 2);
 

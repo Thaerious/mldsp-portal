@@ -20,7 +20,7 @@ function showUploadDialog(selector = "#upload-form") {
         });
 
         const r = await response.json();
-        if (r.message) ModalConfirm.show(r.message);        
+        if (r.message || r.status === CONST.STATUS.ERROR) ModalConfirm.show(r.message);      
     }
 }
 

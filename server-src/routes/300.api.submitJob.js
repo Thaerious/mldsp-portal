@@ -23,38 +23,53 @@ route.use(CONST.URLS.SUBMIT_JOB,
     submit,
 );
 
+class APIError extends Error{
+    constructor(message, record) {
+        super(message);
+        this.record = record;
+    }
+}
+
+/**
+ * Determine the path of the zip file.
+ * The request body must have a source and filename.
+ */
+function getZipPath(req) {
+    switch (req.body.source.toUpperCase()) {
+        case "USER":
+            return Path.join(CONST.DATA.USER, req.oidc.user.email, req.body.filename + '.zip');
+        case "DEFAULT":
+            return Path.join(CONST.DATA.DEFAULT, req.body.filename + '.zip');
+    }
+}
+
 async function submit(req, res, next) {
     try {
-        let zipPath = "";
-        switch (req.body.source.toUpperCase()) {
-            case "USER":
-                zipPath = Path.join(CONST.DATA.USER, req.oidc.user.email, req.body.filename + '.zip');
-                break;
-            case "DEFAULT":
-                zipPath = Path.join(CONST.DATA.DEFAULT, req.body.filename + '.zip');
-                break;
-        }
-
-        const record = await createJob(req.oidc.user.email, req.body.description);
-        await upload(record, zipPath);
-        await startJob(record);
-        handleResponse(res, CONST.URLS.SUBMIT_JOB, record);
+        const zipPath = getZipPath(req);
+        let record = await createJob(req.oidc.user.email, req.body.description);
+        record = await upload(record, zipPath);
+        record = await startJob(record);
+        handleResponse(res, CONST.URLS.SUBMIT_JOB, { record: record });
     } catch (error) {
-        handleError(error, CONST.URLS.SUBMIT_JOB, req, res);
+        handleError(res, CONST.URLS.SUBMIT_JOB, error, { record: error.record });
     }
 }
 
 async function createJob(userid, description) {
     const apiServer = await jobs.nextServer();
-    const createURL = Path.join(apiServer.url, CONST.API.CREATE_JOB);       
-    
-    const json = await postapi(createURL, {
+    const createURL = Path.join(apiServer.url, CONST.API.CREATE_JOB);
+
+    const response = await postapi(createURL, {
         'userid': userid,
         'description': description
     });
-    
-    json.record.server = apiServer;
-    return json.record;
+
+    response.record.server = apiServer;
+    if (response.status === CONST.STATUS.ERROR) {
+        throw new APIError(response.message, response.record);
+    }    
+
+    return response.record;
 }
 
 async function upload(record, filename) {
@@ -65,22 +80,35 @@ async function upload(record, filename) {
         type: "application/zip",
     });
 
-    return await postapi(uploadURL, {
+    const response = await postapi(uploadURL, {
         'userid': record.userid,
         'jobid': record.jobid,
         'fileupload': { 'blob': blob, "filename": filename }
     });
+
+    response.record.server = record.server;
+    if (response.status === CONST.STATUS.ERROR) {
+        throw new APIError(response.message, response.record);
+    }
+
+    return response.record;
 }
 
 async function startJob(record) {
     const startURL = Path.join(record.server.url, CONST.API.START_JOB);
 
-    const json = await postapi(startURL, {
+    const response = await postapi(startURL, {
         'userid': record.userid,
-        'jobid': record.jobid        
+        'jobid': record.jobid
     });
 
-    return json.jobid;    
+    response.record.server = record.server;
+    if (response.status === CONST.STATUS.ERROR) {
+        console.log(response);
+        throw new APIError(response.message, response.record);
+    }
+
+    return response.record;
 }
 
 export default route;

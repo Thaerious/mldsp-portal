@@ -1,4 +1,5 @@
 import ModalConfirm from "/dashboard/scripts/ModalConfirm.mjs";
+import CONST from "/shared/constants.js";
 
 async function postAppJSON(url, data = {}) {
     const response = await fetch(url, {
@@ -10,7 +11,7 @@ async function postAppJSON(url, data = {}) {
     });
 
     const r = await response.json();
-    if (r.message) ModalConfirm.show(r.message);
+    if (r.message || r.status === CONST.STATUS.ERROR) ModalConfirm.show(r.message);
     return r;
 }
 
