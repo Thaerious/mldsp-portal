@@ -1,6 +1,7 @@
 import express from "express";
 import handleError from "./handleError.js";
 import handleResponse from "./handleResponse.js";
+import { args } from "./setupLogger.js";
 
 /**
  * Two functions to standardize the api-endpoint json response.
@@ -31,14 +32,17 @@ function makeRoute(url, cb = async req => { }, route = express.Router()) {
 }
 
 /**
- * Use this function if the route has more than one operation.
- * Pass the result of the this fuction to route.use.
+ * Wrap the callback (cb) function in a try-catch block and standardize
+ * the http responses.
  */
 function routeFactory(url, cb) {
     return async (req, res, next) => {
         try {
             handleResponse(res, url, await cb(req));
         } catch (error) {
+            if (args.tally["verbose"] >= 2) {
+                console.error(error);
+            }
             handleError(res, url, error);
         } finally {
             res.end();

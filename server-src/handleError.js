@@ -6,11 +6,12 @@ function handleError(res, url, err, obj = {}) {
     const msg = JSON.stringify({
         status: CONST.STATUS.ERROR,
         url: url,
-        message: err.message,
+        message: err?.message,
+        cause: err?.cause,
         ...obj
     }, null, 2);
 
-    logger.veryverbose(msg);
+    logger.log(msg);
     res.write(msg);
     res.end();
 }

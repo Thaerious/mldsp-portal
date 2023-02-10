@@ -47,7 +47,8 @@ const CONST = {
         }
     },
     PATH: {
-        ROUTES : "server-src/routes"
+        ROUTES: "server-src/routes",
+        LOG: "./log"
     },
     JOBS: {
         ROOT: "./data/user/",

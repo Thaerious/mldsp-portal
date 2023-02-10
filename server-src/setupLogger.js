@@ -1,5 +1,7 @@
 import Logger from "@thaerious/logger";
-import Path from "path";
+import CONST from "./constants.js";
+import { mkdirif } from "@thaerious/utility";
+import FS from "fs";
 import ParseArgs from "@thaerious/parseargs"
 
 /**
@@ -9,16 +11,16 @@ import ParseArgs from "@thaerious/parseargs"
  */
 function joinDate(date, dateArray, seperator) {
     function format(m) {
-       let f = new Intl.DateTimeFormat('en', m);
-       return f.format(date);
+        let f = new Intl.DateTimeFormat('en', m);
+        return f.format(date);
     }
     return dateArray.map(format).join(seperator);
- }
+}
 
-function getLogFile() {
-    const dateArray = [{year: 'numeric'}, {month: 'short'}, {day: 'numeric'}];
+function logFilename() {
+    const dateArray = [{ year: 'numeric' }, { month: 'short' }, { day: 'numeric' }];
     const dateString = joinDate(new Date, dateArray, '_');
-    return Path.join("log", dateString + ".txt");    
+    return mkdirif(CONST.PATH.LOG, dateString + ".txt");
 }
 
 const options = {
@@ -32,25 +34,28 @@ const options = {
 };
 
 const args = new ParseArgs().loadOptions(options).run();
-const appLogger = new Logger();
+const logger = new Logger();
 
-appLogger.channel(`standard`).enabled = true;
-appLogger.channel(`error`).enabled = true;
-appLogger.channel(`log`).enabled = true;
-appLogger.channel(`verbose`).enabled = false;
-appLogger.channel(`veryverbose`).enabled = false;
+logger.channel(`standard`).enabled = true;
+logger.channel(`error`).enabled = true;
+logger.channel(`log`).enabled = true;
+logger.channel(`verbose`).enabled = false;
+logger.channel(`veryverbose`).enabled = false;
 
-if (args.flags["verbose"]) appLogger.channel(`verbose`).enabled = true;
-if (args.tally["verbose"] >= 2) appLogger.channel(`veryverbose`).enabled = true;
+if (args.flags["verbose"]) logger.channel(`verbose`).enabled = true;
+if (args.tally["verbose"] >= 2) logger.channel(`veryverbose`).enabled = true;
 
-// appLogger.channel(`log`).log = (text) => {
-//     FS.appendFileSync(getLogFile(), text + "\n");
-// }
+logger.channel("log").addHandler((string) => {
+    FS.appendFileSync(logFilename(), string + "\n");
+});
 
-// appLogger.channel("error").log = function(string){
-//     console.error("Error: see log files");
-//     const path = mkdirif(process.env.LOG_DIR, "error.log");
-//     FS.appendFileSync(path, "\n *** " + new Date().toString() + "\n" + string + "\n");
-// }
+logger.channel("verbose").addHandler((string) => {
+    FS.appendFileSync(logFilename(), string + "\n");
+});
 
-export default appLogger.all();
+logger.channel("veryverbose").addHandler((string) => {
+    FS.appendFileSync(logFilename(), string + "\n");
+});
+
+const all = logger.all();
+export { all as default, args };

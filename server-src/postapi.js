@@ -2,6 +2,7 @@ import logger from "./setupLogger.js";
 
 async function postapi(url, data) {
     const formData = new FormData();
+
     for (const field in data) {
         if (typeof (data[field]) == "object") {
             formData.set(field, data[field].blob, data[field].filename);
@@ -16,8 +17,8 @@ async function postapi(url, data) {
         body: formData
     });
 
-    const jsonResponse = await response.json()
-    logger.veryverbose(JSON.stringify(jsonResponse, null, 2));
+    const jsonResponse = await response.json();
+    logger.veryverbose(`${url} ${JSON.stringify(jsonResponse, null, 2)}`);
     return jsonResponse;
 }
 
